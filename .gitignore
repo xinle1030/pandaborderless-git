@@ -2,6 +2,7 @@
 
 # dependencies
 /cross-border-payment-api/node_modules
+/cross-border-payment-api/config/.env
 /.pnp
 .pnp.js
 
