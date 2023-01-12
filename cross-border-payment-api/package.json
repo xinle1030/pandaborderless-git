@@ -18,5 +18,6 @@
     "express": "^4.18.2",
     "truffle-contract": "^4.0.31",
     "web3": "^1.8.1"
-  }
+  },
+  "type": "module"
 }
