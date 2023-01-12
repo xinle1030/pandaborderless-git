@@ -16,5 +16,9 @@ This is a monorepo containing 1 project as follows:
 - Open Terminal
 - Go to ./cross-border-payment-api folder
 - Run in terminal `npm install`
-- Run in terminal `npm start`
+- In another terminal of same directory, run ```ganache-cli```
+- Go back to the previous terminal and run ```truffle compile```
+- Then run ```truffle migrate```
+- Then run ```truffle test```
+- Then run `npm start`
 - Navigate to https://localhost:3333
