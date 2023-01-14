@@ -41,10 +41,13 @@
  * https://trufflesuite.com/docs/truffle/getting-started/using-the-truffle-dashboard/
  */
 
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config/.env" });
 // require('dotenv').config();
 // const { MNEMONIC, PROJECT_ID } = process.env;
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+const privateKeys = require("./config/secrets.js");
 
 module.exports = {
   /**
@@ -58,6 +61,13 @@ module.exports = {
    */
 
   networks: {
+    besu: {
+      // must be a thunk, otherwise truffle commands may hang in CI
+      //start from first address in the array to deploy the contract, generate 3 addresses in total
+      provider: () =>
+        new HDWalletProvider(privateKeys, "http://127.0.0.1:7545", 0, 3),
+      network_id: "*",
+    },
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache, geth, or parity) in a separate terminal
@@ -106,7 +116,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.17" // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.17", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
@@ -115,8 +125,8 @@ module.exports = {
       //  },
       //  evmVersion: "byzantium"
       // }
-    }
-  }
+    },
+  },
 
   // Truffle DB is currently disabled by default; to enable it, change enabled:
   // false to enabled: true. The default storage location can also be
