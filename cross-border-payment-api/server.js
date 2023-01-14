@@ -1,9 +1,10 @@
-import express from "express";
-import cors from "cors";
-// import connectDB from "./config/db.js";
-import dotenv from "dotenv";
-// import swaggerUi from "swagger-ui-express";
-// import swaggerSpec from "./swagger-config/swagger.js";
+const express = require("express");
+const cors = require("cors");
+
+// const connectDB = require("./config/db.js");
+const dotenv = require("dotenv");
+// const swaggerUi = require("swagger-ui-express");
+// const swaggerSpec = require("./swagger-config/swagger.js");
 
 dotenv.config({ path: "./config/.env" });
 
@@ -15,8 +16,8 @@ app.use(cors());
 
 // connectDB();
 
-import indexRouter from "./routes/index.js";
-import paymentRouter from "./routes/payments.js";
+const indexRouter = require("./routes/index.js");
+const paymentRouter = require("./routes/payments.js");
 
 // Body Parser
 app.use(express.urlencoded({ extended: true }));
@@ -34,4 +35,5 @@ if (process.env.NODE_ENV !== "test") {
     console.log(`Server is running at PORT ${PORT}`);
   });
 }
-export default app;
+
+module.exports = app;
