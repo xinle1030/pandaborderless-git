@@ -20,8 +20,9 @@ This is a monorepo containing 1 project as follows:
 - Run in terminal `npm install truffle -g`
 - Run in terminal `npm install`
 - In another terminal of same directory, run ```ganache-cli```
-- Go back to the previous terminal and run ```truffle compile```
-- Then run ```truffle migrate```
-- Then run ```truffle test```
+- Go back to the previous terminal and run ```truffle compile``` to compile contract
+- Then run ```npm run besu```
+- Then run ```truffle migrate --network besu``` to create migrations to deploy migrations and wallet on besu network
+- Then run ```truffle test --network besu```
 - Then run `npm start`
 - Navigate to https://localhost:3333
