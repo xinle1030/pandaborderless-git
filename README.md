@@ -13,8 +13,11 @@ This is a monorepo containing 1 project as follows:
 - Install NodeJS **LTS** version from <a href="https://nodejs.org/en/download/">NodeJs Official Page</a>
 - Download the product on this page
 - Unzip the downloaded file to a folder in your computer
+- Download Ganache from https://trufflesuite.com/ganache/
 - Open Terminal
 - Go to ./cross-border-payment-api folder
+- Run in terminal `npm install nodemon -g`
+- Run in terminal `npm install truffle -g`
 - Run in terminal `npm install`
 - In another terminal of same directory, run ```ganache-cli```
 - Go back to the previous terminal and run ```truffle compile```
