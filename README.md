@@ -33,7 +33,7 @@ This is a monorepo containing 1 project as follows:
 
 ### API Paths
 
-1. Auth (auth.routes.js)
+1. Auth (auth.js)
 POST /api/auth/signup
 POST /api/auth/signin
 
