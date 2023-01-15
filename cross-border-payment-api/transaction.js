@@ -79,7 +79,7 @@ const send = async (accountFrom, addressTo) => {
   const createTransaction = await web3.eth.accounts.signTransaction(
     {
       gas: 50000,
-      to: addressTo,
+      to: contractAddress,
       data: data,
     },
     accountFrom.privateKey
