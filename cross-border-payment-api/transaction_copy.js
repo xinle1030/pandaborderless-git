@@ -68,7 +68,7 @@ const send = async (accountFrom, addressTo) => {
   // Sign transaction with PK
   const createTransaction = await web3.eth.accounts.signTransaction(
     {
-      gas: 50000,
+      gas: 22000,
       to: contractAddress,
       data: data,
     },
