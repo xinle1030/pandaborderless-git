@@ -3,8 +3,6 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config/.env" });
 const app = express();
-const mongodb = require("mongodb").MongoClient;
-
 const mongoose = require("mongoose");
 
 const privateKeys = [
@@ -22,9 +20,6 @@ app.use(express.json());
 app.use(cors());
 
 app.set("trust proxy", true);
-
-// app.use("/api/payments/crossborder", paymentRouter);
-// app.use("/", indexRouter);
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require("web3");
