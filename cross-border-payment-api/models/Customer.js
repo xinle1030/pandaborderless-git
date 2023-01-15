@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: [true, "Please add user name"],
   },
@@ -15,5 +15,4 @@ const customerSchema = new mongoose.Schema({
   },
 });
 
-module.exports =
-  mongoose.models.Customer || mongoose.model("Customer", customerSchema);
+module.exports = mongoose.model("Customer", customerSchema);
