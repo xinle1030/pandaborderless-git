@@ -4,7 +4,7 @@ dotenv.config({ path: "./config/.env" });
 
 const BASE_URL = "/api/payments/crossborder";
 
-module.exports = function (app, db, lms, accounts) {
+module.exports = function (app, lms, accounts) {
   app.get("/", (req, res) => {
     res.send("Welcome to cross border payments");
   });
