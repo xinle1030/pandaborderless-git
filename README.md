@@ -30,3 +30,13 @@ This is a monorepo containing 1 project as follows:
 - Then run ```truffle test --network besu```
 - Then run `npm start`
 - Navigate to https://localhost:3333
+
+### API Paths
+
+1. Auth (auth.routes.js)
+POST /api/auth/signup
+POST /api/auth/signin
+
+2. Account (account.js)
+POST /api/account - to create account along with wallet address
+POST /api/account/:accountNumber - to view account

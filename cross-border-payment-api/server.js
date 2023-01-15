@@ -64,11 +64,12 @@ mongoose
     // const lms = await LMS.deployed();
     const lms = LMS;
 
-    // routes
-    require("./routes/index")(app, lms, accounts);
-    require("./routes/payments")(app, lms, web3, accounts);
-    require("./routes/auth.routes")(app);
-    require("./routes/user.routes")(app);
+      // routes
+      require("./routes/index")(app, lms, accounts);
+      require("./routes/payments")(app, lms, accounts);
+      require("./routes/auth.routes")(app);
+      require("./routes/user.routes")(app);
+      require("./routes/account")(app);
 
     // Server Setup
     const PORT = process.env.PORT || 3333;

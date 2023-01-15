@@ -11,24 +11,25 @@ const transactionHistorySchema = new mongoose.Schema({
     ref: "Customer",
   },
   accountFrom: {
-    type: Number,
-    required: true,
+    type: String,
   },
   accountTo: {
-    type: Number,
-    required: true,
-  },
-  transactionHash: {
     type: String,
-    required: true,
+  },
+  exchangeRate: {
+    type: Number,
   },
   transactionAmount: {
     type: Number,
     required: true,
   },
-  dateTime: {
+  timestamp: {
     type: String,
     required: true,
+  },
+  meta: {
+    currency: { type: String },
+    transactionHash: { type: String, required: true },
   },
 });
 

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const accountSchema = new mongoose.Schema({
   accountNumber: {
-    type: Number,
+    type: String,
     required: true,
     unique: true,
   },
@@ -11,6 +11,10 @@ const accountSchema = new mongoose.Schema({
   },
   walletPKHash: {
     type: String,
+  },
+  currency: {
+    type: String,
+    required: true,
   },
   balance: {
     type: Number,
