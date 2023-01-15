@@ -1,5 +1,5 @@
 const { authJwt } = require("../middlewares");
-const controller = require("../controllers/user.controller");
+const controller = require("../controllers/auth/user.controller");
 
 const BASE_URL = "/api/test";
 

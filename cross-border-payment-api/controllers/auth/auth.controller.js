@@ -1,5 +1,5 @@
-const config = require("../config/auth.config");
-const Customer = require("../models/Customer");
+const config = require("../../config/auth.config");
+const Customer = require("../../models/Customer");
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");

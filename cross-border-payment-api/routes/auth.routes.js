@@ -1,5 +1,5 @@
 const { verifySignUp } = require("../middlewares");
-const controller = require("../controllers/auth.controller");
+const controller = require("../controllers/auth/auth.controller");
 
 const BASE_URL = "/api/auth";
 
