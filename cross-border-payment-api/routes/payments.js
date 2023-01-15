@@ -58,23 +58,12 @@ module.exports = function (app, ABI, web3, accounts) {
     const receiver = await retrieveDocumentByAccountNumber(req.body.accountTo);
     accountTo = receiver.walletAdrHash;
 
-    console.log(accountFromPK);
-    console.log(accountFrom);
-    console.log(accountTo);
-    console.log("nihaoma");
-
-    //lilmeow
-    lilmeow_from = "0xE4f4b37F70fEDAA6F2Eea10995a09fC4C16986Da";
-    lilmeow_from_pk =
-      "bf8a1e542f4e241d03a1b5d907754f1986e6e180a7ab050a593db47b9fb78a12";
-    lilmeow_to = "0x33Ee02c93Ac44856e5F89089a0c472FEE1f49510";
-
     // create contract
     let contract = new web3.eth.Contract(ABI, contractAddress);
 
     // create transfer data
     const amount = web3.utils.toBN(amountToTransfer);
-    const data = contract.methods.transfer(lilmeow_to, amount).encodeABI();
+    const data = contract.methods.transfer(accountTo, amount).encodeABI();
 
     // Create send function
     const send = async (accountFromWalletAddr, accountFromPK, addressTo) => {
@@ -112,7 +101,7 @@ module.exports = function (app, ABI, web3, accounts) {
   app.get(BASE_URL + "/:paymentId", (req, res) => {
     let paymentId = req.params.paymentId;
     res.send("Payment id: " + paymentId);
-  });
+  }); 
 
   app.get(BASE_URL + "/:paymentId/confirm", (req, res) => {
     let paymentId = req.params.paymentId;
