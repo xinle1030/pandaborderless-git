@@ -16,12 +16,6 @@ const transactionHistorySchema = new mongoose.Schema({
   accountTo: {
     type: String,
   },
-  countryFrom: {
-    type: String,
-  },
-  countryTo: {
-    type: String,
-  },
   exchangeRate: {
     type: Number,
   },
