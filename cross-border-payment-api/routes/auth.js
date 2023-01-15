@@ -1,5 +1,6 @@
 const { verifySignUp } = require("../middlewares");
-const controller = require("../controllers/auth/auth.controller");
+const signUp = require("../controllers/auth/signUp");
+const signIn = require("../controllers/auth/signIn");
 
 const BASE_URL = "/api/auth";
 
@@ -15,8 +16,8 @@ module.exports = function (app) {
   app.post(
     BASE_URL + "/signup",
     [verifySignUp.checkDuplicateUsername, verifySignUp.checkDuplicateEmail],
-    controller.signup
+    signUp
   );
 
-  app.post(BASE_URL + "/signin", controller.signin);
+  app.post(BASE_URL + "/signin", signIn);
 };
