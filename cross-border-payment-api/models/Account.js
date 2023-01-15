@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const accountSchema = new mongoose.Schema({
-  account: {
+  accountNumber: {
     type: Number,
     required: true,
     unique: true,
