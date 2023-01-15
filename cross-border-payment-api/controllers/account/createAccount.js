@@ -29,6 +29,7 @@ const generateAccountNumber = () => {
 module.exports = (req, res) => {
   Customer.findOne({
     email: req.body.email,
+        currency: req.body.currency,
   }).exec((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -43,6 +44,7 @@ module.exports = (req, res) => {
       walletPKHash: privateKey,
       balance: 1000,
       ownerId: user._id,
+      currency: currency
     });
 
     account.save((err, account) => {
