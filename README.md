@@ -8,6 +8,10 @@ This is a monorepo containing 1 project as follows:
 
 ## Backend
 
+### Set up hyperledger besu
+- Download the Besu packaged binaries at this link, https://github.com/hyperledger/besu/releases", choose 22.10.3 version
+
+
 ### Setting up the server locally
 - Clone the project
 - Install NodeJS **LTS** version from <a href="https://nodejs.org/en/download/">NodeJs Official Page</a>
