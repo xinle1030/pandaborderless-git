@@ -1,26 +1,25 @@
 const express = require("express");
 const dotenv = require("dotenv");
+dotenv.config({ path: "./config/.env" });
 
-dotenv.config({ path: "../config/.env" });
+const BASE_URL = "/api/payments/crossborder";
 
-const router = express.Router();
+module.exports = function (app, db, lms, accounts) {
+  app.get("/", (req, res) => {
+    res.send("Welcome to cross border payments");
+  });
 
-router.get("/", (req, res) => {
-  res.send("Get a list of cross border payments");
-});
+  app.get(BASE_URL + "/confirm", (req, res) => {
+    res.send("Confirm multiple previously initiated cross-border payments");
+  });
 
-router.get("/confirm", (req, res) => {
-  res.send("Confirm multiple previously initiated cross-border payments");
-});
+  app.get(BASE_URL + "/:paymentId", (req, res) => {
+    let paymentId = req.params.paymentId;
+    res.send("Payment id: " + paymentId);
+  });
 
-router.get("/:paymentId", (req, res) => {
-  let paymentId = req.params.paymentId;
-  res.send("Payment id: " + paymentId);
-});
-
-router.get("/:paymentId/confirm", (req, res) => {
-  let paymentId = req.params.paymentId;
-  res.send("Payment id to confirm: " + paymentId);
-});
-
-module.exports = router;
+  app.get(BASE_URL + "/:paymentId/confirm", (req, res) => {
+    let paymentId = req.params.paymentId;
+    res.send("Payment id to confirm: " + paymentId);
+  });
+};
