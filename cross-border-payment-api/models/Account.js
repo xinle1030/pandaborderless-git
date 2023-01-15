@@ -12,6 +12,10 @@ const accountSchema = new mongoose.Schema({
   walletPKHash: {
     type: String,
   },
+  currency: {
+    type: String,
+    required: true,
+  },
   balance: {
     type: Number,
     required: true,
