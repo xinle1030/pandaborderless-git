@@ -67,7 +67,7 @@ mongoose
       // routes
       require("./routes/index")(app, lms, accounts);
       require("./routes/payments")(app, lms, accounts);
-      require("./routes/auth.routes")(app);
+      require("./routes/auth")(app);
       require("./routes/user.routes")(app);
       require("./routes/account")(app);
 
