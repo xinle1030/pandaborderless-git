@@ -14,7 +14,7 @@ contract PandaCoin is ERC20, Pausable, AccessControl, ERC20Permit, ERC20FlashMin
     constructor() ERC20("PandaCoin", "PDC") ERC20Permit("PandaCoin") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
-        _mint(msg.sender, 10000000 * 10 ** decimals());
+        _mint(msg.sender, 1000000000 * 10 ** decimals());
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
