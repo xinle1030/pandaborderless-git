@@ -6,8 +6,8 @@ const fs = require("fs");
 const pandaCoinContract = JSON.parse(
   fs.readFileSync("./build/contracts/PandaCoin.json", "utf8")
 );
-// const CONTRACT_ABI = pandaCoinContract.abi;
-const CONTRACT_ABI = require("./ABI");
+const CONTRACT_ABI = pandaCoinContract.abi;
+//const CONTRACT_ABI = require("./ABI");
 
 // Input variables
 const contractAddress = "0x92F283FaC9b77c0a91C320fFA921b7423294D3da"; // PandaCoin contract on Goerli Testnet
@@ -83,7 +83,7 @@ const send = async (accountFrom, addressTo) => {
     `Transaction successful with hash: ${createReceipt.transactionHash}`
   );
 
-  showBalance(accountFrom, addressTo);
+  showBalance(contract, accountFrom.address, addressTo);
 };
 
 // Call send function
