@@ -11,11 +11,11 @@ const transactionHistorySchema = new mongoose.Schema({
     ref: "Customer",
   },
   accountFrom: {
-    type: Number,
+    type: String,
     required: true,
   },
   accountTo: {
-    type: Number,
+    type: String,
     required: true,
   },
   transactionHash: {
