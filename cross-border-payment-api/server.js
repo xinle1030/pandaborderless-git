@@ -16,6 +16,12 @@ app.use(cors());
 
 // connectDB();
 
+const fs = require("fs");
+const contract = JSON.parse(
+  fs.readFileSync("./build/contracts/SimpleStorage.json", "utf8")
+);
+const CONTRACT_ABI = contract.abi;
+
 const indexRouter = require("./routes/index.js");
 const paymentRouter = require("./routes/payments.js");
 
