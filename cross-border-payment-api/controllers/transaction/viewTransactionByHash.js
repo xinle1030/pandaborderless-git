@@ -1,7 +1,7 @@
 const Transaction = require("../../models/TransactionHistory");
 
 module.exports = (req, res) => {
-  console.log("Get transaction by id");
+  console.log("Get transaction by Hash");
 
   Transaction.findOne({
     "meta.transactionHash": req.params.transactionHash,
