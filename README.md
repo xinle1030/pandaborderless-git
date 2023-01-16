@@ -31,12 +31,26 @@ This is a monorepo containing 1 project as follows:
 - Then run `npm start`
 - Navigate to https://localhost:3333
 
+### Setting up the server on EC2
+- Then run `pm2 -- panda npm -- start` instead of `npm start`
+- Navigate to http://{public IP OR DNS}
+
+
 ### API Paths
 
 1. Auth (auth.js)
-POST /api/auth/signup
-POST /api/auth/signin
+POST /api/auth/signup  
+POST /api/auth/signin  
 
-2. Account (account.js)
-POST /api/account - to create account along with wallet address
-POST /api/account/:accountNumber - to view account
+2. Account (account.js)  
+POST /api/account - to create account along with wallet address  
+POST /api/account/:accountNumber - to view account  
+
+3. Payment (payments.js)  
+PUT /api/payments/crossborder/confirm - to create a transaction  
+    - sender acc  
+    - receiver acc  
+    - amount to transfer (in SGD)  
+PUT /api/payments/crossborder/retrieve - to retrieve PandaCoin  
+    - customer acc  
+    - amount to retrieve (in PDC)  
