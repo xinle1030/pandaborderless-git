@@ -72,9 +72,10 @@ mongoose
     const accounts = await web3.eth.getAccounts();
 
     // routes
-    require("./routes/index")(app, lms, accounts);
-    require("./routes/payments")(app, CONTRACT_ABI, web3, accounts);
+    require("./routes/index")(app);
+    require("./routes/payments")(app, lms, web3);
     require("./routes/auth")(app);
+    require("./routes/transaction")(app);
     require("./routes/account")(app, FX_LMS);
 
     // Server Setup
