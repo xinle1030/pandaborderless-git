@@ -1,11 +1,10 @@
-const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config/.env" });
 const Account = require("../models/Account");
 const Transaction = require("../models/TransactionHistory");
 
 const BASE_URL = "/api/payments/crossborder";
-const contractAddress = "0x1A9D660da99c095BF391690f4fE46B1Ff2CC197F";
+const contractAddress = process.env.pdcContractAddress;
 const PANDA_ACC = "9250";
 
 // get account details
@@ -19,20 +18,9 @@ async function retrieveDocumentByAccountNumber(accountNumber) {
   }
 }
 
-// create new transaction
-async function insertTransaction(transactionData) {
-  let transactionId = Math.floor(Math.random() * 1000000);
-  const existingTransaction = await Transaction.findOne({ transactionId });
-  while (existingTransaction) {
-    transactionId = Math.floor(Math.random() * 1000000);
-    existingTransaction = await Transaction.findOne({ transactionId });
-  }
-  transactionData.transactionId = transactionId;
-  return Transaction.create(transactionData);
-}
+module.exports = function (app, lms, web3) {
 
-module.exports = function (app, ABI, web3, accounts) {
-  app.get("/", (req, res) => {
+  app.get(BASE_URL + "/", (req, res) => {
     res.send("Welcome to cross border payments");
   });
 
@@ -72,12 +60,9 @@ module.exports = function (app, ABI, web3, accounts) {
     const receiver = await retrieveDocumentByAccountNumber(req.body.accountTo);
     accountTo = receiver.walletAdrHash;
 
-    // create contract
-    let contract = new web3.eth.Contract(ABI, contractAddress);
-
     // create transfer data
     const amount = web3.utils.toBN(amountToTransfer);
-    const data = contract.methods.transfer(accountTo, amount).encodeABI();
+    const data = lms.methods.transfer(accountTo, amount).encodeABI();
 
     // Create send function
     const send = async (accountFromWalletAddr, accountFromPK, addressTo) => {
@@ -110,7 +95,6 @@ module.exports = function (app, ABI, web3, accounts) {
 
     // create transaction history
     const transactionData = {
-      transactionId: 0,
       accountFrom: req.body.accountFrom,
       accountTo: req.body.accountTo,
       transactionAmount: req.body.amountToTransfer,
@@ -122,7 +106,7 @@ module.exports = function (app, ABI, web3, accounts) {
     };
 
     try {
-      await insertTransaction(transactionData);
+      await Transaction.create(transactionData);
     } catch (error) {
       // Handle error
       throw error;
@@ -168,17 +152,14 @@ module.exports = function (app, ABI, web3, accounts) {
     const receiver = await retrieveDocumentByAccountNumber(PANDA_ACC);
     accountTo = receiver.walletAdrHash;
 
-    // create contract
-    let contract = new web3.eth.Contract(ABI, contractAddress);
-
     // create transfer data
     const amount = web3.utils.toBN(amountToTransfer);
-    const data = contract.methods.transfer(accountTo, amount).encodeABI();
+    const data = lms.methods.transfer(accountTo, amount).encodeABI();
 
     // Create send function
     const send = async (accountFromWalletAddr, accountFromPK, addressTo) => {
         // check balance
-      var accountBalance = await contract.methods.balanceOf(accountFrom).call();
+      var accountBalance = await lms.methods.balanceOf(accountFrom).call();
       if (amountToTransfer > Number(accountBalance)) {
         const error = "Balance not sufficient!";
         res.status(400).send({ message: error });
@@ -214,15 +195,5 @@ module.exports = function (app, ABI, web3, accounts) {
 
     // Expected response: transaction history object
     res.send("Transaction hash: " + hash);
-  });
-
-  app.get(BASE_URL + "/:paymentId", (req, res) => {
-    let paymentId = req.params.paymentId;
-    res.send("Payment id: " + paymentId);
-  });
-
-  app.get(BASE_URL + "/:paymentId/confirm", (req, res) => {
-    let paymentId = req.params.paymentId;
-    res.send("Payment id to confirm: " + paymentId);
   });
 };
