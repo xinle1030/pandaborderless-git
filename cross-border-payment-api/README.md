@@ -137,3 +137,32 @@
       },
 }
 ```
+
+```http
+  PUT /api/payments/crossborder/confirm
+```
+
+| Parameter           | Type     | Description        |
+| :--------           | :------- | :----------------- |
+| `accountFrom`       | `string` | sender's account   |
+| `accountTo`         | `string` | receiver's account |
+| `amountToTransfer`  | `int`    | value to transfer  |
+
+**Response:**
+```
+{Transaction hash: 0xb64ddd63a73e3019800b846cb7f7123b83053368d5ec406678e1173025f00d28}
+```
+
+```http
+  PUT /api/payments/crossborder/retrieve
+```
+
+| Parameter           | Type     | Description        |
+| :--------           | :------- | :----------------- |
+| `accountTo`         | `string` | receiver's account |
+| `amountToTransfer`  | `int`    | value to retrieve  |
+
+**Response:**
+```
+{Transaction hash: 0xb64ddd63a73e3019800b846cb7f7123b83053368d5ec406678e1173025f00d28}
+```
