@@ -7,10 +7,10 @@ const generateWallet = () => {
   const wallet = ethereumjs["default"].generate();
 
   // get the private key in hex format
-  const privateKey = wallet.getPrivateKeyString();
+  const privateKey = (wallet.getPrivateKeyString()).substring(2);
 
   // get the address
-  const address = "0x" + wallet.getAddressString();
+  const address = wallet.getAddressString();
 
   return {
     address,
@@ -27,9 +27,10 @@ const generateAccountNumber = () => {
 };
 
 module.exports = (req, res) => {
+  let {email, currency} = req.body;
+
   Customer.findOne({
-    email: req.body.email,
-        currency: req.body.currency,
+    email: email,
   }).exec((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -44,7 +45,7 @@ module.exports = (req, res) => {
       walletPKHash: privateKey,
       balance: 1000,
       ownerId: user._id,
-      currency: currency
+      currency: currency,
     });
 
     account.save((err, account) => {
