@@ -1,15 +1,7 @@
 const mongoose = require("mongoose");
 
 const transactionHistorySchema = new mongoose.Schema({
-  transactionId: {
-    type: Number,
-    required: true,
-  },
   // The user associated with the transaction
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Customer",
-  },
   accountFrom: {
     type: String,
   },
