@@ -42,8 +42,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -69,8 +68,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"initVal\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"stored\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"get\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"retVal\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x\",\"type\":\"uint256\"}],\"name\":\"set\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"storedData\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/SimpleStorage.sol\":\"SimpleStorage\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/SimpleStorage.sol\":{\"keccak256\":\"0x176217b011a9bf723c1284f99b9e9a938b20ea810862ccd50b95c6a3b2bd07d8\",\"urls\":[\"bzz-raw://98b398d1f70e165f4718e5a93fe89ccb41ec8fd6fa2532b480184d3ce5c7594c\",\"dweb:/ipfs/QmQVr8ZeqUM3YG9eYgvHJmHvwFJvwzhMCxQFgDTuSpzXJX\"]}},\"version\":1}",
@@ -2052,7 +2050,7 @@
   "sourceMap": "28:381:8:-:0;;;129:98;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;167:27;174:10;186:7;167:27;;;;;;;:::i;:::-;;;;;;;;214:7;201:10;:20;;;;129:98;28:381;;88:117:9;197:1;194;187:12;334:77;371:7;400:5;389:16;;334:77;;;:::o;417:122::-;490:24;508:5;490:24;:::i;:::-;483:5;480:35;470:63;;529:1;526;519:12;470:63;417:122;:::o;545:143::-;602:5;633:6;627:13;618:22;;649:33;676:5;649:33;:::i;:::-;545:143;;;;:::o;694:351::-;764:6;813:2;801:9;792:7;788:23;784:32;781:119;;;819:79;;:::i;:::-;781:119;939:1;964:64;1020:7;1011:6;1000:9;996:22;964:64;:::i;:::-;954:74;;910:128;694:351;;;;:::o;1051:126::-;1088:7;1128:42;1121:5;1117:54;1106:65;;1051:126;;;:::o;1183:96::-;1220:7;1249:24;1267:5;1249:24;:::i;:::-;1238:35;;1183:96;;;:::o;1285:118::-;1372:24;1390:5;1372:24;:::i;:::-;1367:3;1360:37;1285:118;;:::o;1409:::-;1496:24;1514:5;1496:24;:::i;:::-;1491:3;1484:37;1409:118;;:::o;1533:332::-;1654:4;1692:2;1681:9;1677:18;1669:26;;1705:71;1773:1;1762:9;1758:17;1749:6;1705:71;:::i;:::-;1786:72;1854:2;1843:9;1839:18;1830:6;1786:72;:::i;:::-;1533:332;;;;;:::o;28:381:8:-;;;;;;;",
   "deployedSourceMap": "28:381:8:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;56:22;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;233:88;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;327:79;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;56:22;;;;:::o;233:88::-;273:21;280:10;292:1;273:21;;;;;;;:::i;:::-;;;;;;;;314:1;301:10;:14;;;;233:88;:::o;327:79::-;363:11;390:10;;383:17;;327:79;:::o;7:77:9:-;44:7;73:5;62:16;;7:77;;;:::o;90:118::-;177:24;195:5;177:24;:::i;:::-;172:3;165:37;90:118;;:::o;214:222::-;307:4;345:2;334:9;330:18;322:26;;358:71;426:1;415:9;411:17;402:6;358:71;:::i;:::-;214:222;;;;:::o;523:117::-;632:1;629;622:12;769:122;842:24;860:5;842:24;:::i;:::-;835:5;832:35;822:63;;881:1;878;871:12;822:63;769:122;:::o;897:139::-;943:5;981:6;968:20;959:29;;997:33;1024:5;997:33;:::i;:::-;897:139;;;;:::o;1042:329::-;1101:6;1150:2;1138:9;1129:7;1125:23;1121:32;1118:119;;;1156:79;;:::i;:::-;1118:119;1276:1;1301:53;1346:7;1337:6;1326:9;1322:22;1301:53;:::i;:::-;1291:63;;1247:117;1042:329;;;;:::o;1377:126::-;1414:7;1454:42;1447:5;1443:54;1432:65;;1377:126;;;:::o;1509:96::-;1546:7;1575:24;1593:5;1575:24;:::i;:::-;1564:35;;1509:96;;;:::o;1611:118::-;1698:24;1716:5;1698:24;:::i;:::-;1693:3;1686:37;1611:118;;:::o;1735:332::-;1856:4;1894:2;1883:9;1879:18;1871:26;;1907:71;1975:1;1964:9;1960:17;1951:6;1907:71;:::i;:::-;1988:72;2056:2;2045:9;2041:18;2032:6;1988:72;:::i;:::-;1735:332;;;;;:::o",
   "source": "pragma solidity ^0.8.10;\r\n\r\ncontract SimpleStorage {\r\n  uint public storedData;\r\n  event stored(address _to, uint _amount);\r\n\r\n  constructor(uint initVal) {\r\n    emit stored(msg.sender, initVal);\r\n    storedData = initVal;\r\n  }\r\n\r\n  function set(uint x) public {\r\n    emit stored(msg.sender, x);\r\n    storedData = x;\r\n  }\r\n\r\n  function get() view public returns (uint retVal) {\r\n    return storedData;\r\n  }\r\n}",
-  "sourcePath": "D:\\Documents\\Events\\2023\\NUS Fintech Month 2022 Hackathon\\pandaborderless-git\\cross-border-payment-api\\contracts\\SimpleStorage.sol",
+  "sourcePath": "C:\\Users\\User\\Desktop\\yungxin\\pandaborderless-git\\cross-border-payment-api\\contracts\\SimpleStorage.sol",
   "ast": {
     "absolutePath": "project:/contracts/SimpleStorage.sol",
     "exportedSymbols": {
@@ -2696,8 +2694,7 @@
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-01-16T08:02:15.648Z",
-  "networkType": "ethereum",
+  "updatedAt": "2023-01-16T11:18:41.931Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

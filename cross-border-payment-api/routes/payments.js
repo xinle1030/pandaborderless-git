@@ -18,8 +18,33 @@ async function retrieveDocumentByAccountNumber(accountNumber) {
   }
 }
 
-module.exports = function (app, lms, web3) {
+// deduct account balance
+async function deductBalance(accountNumber, value) {
+  try {
+    const account = await Account.findOne({ accountNumber });
+    if (!account) throw new Error("Account not found.");
+    account.balance -= value;
+    await account.save();
+    return account;
+  } catch (error) {
+    throw error;
+  }
+}
 
+// increase account balance
+async function increaseBalance(accountNumber, value) {
+  try {
+    const account = await Account.findOne({ accountNumber });
+    if (!account) throw new Error("Account not found.");
+    account.balance += value;
+    await account.save();
+    return account;
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = function (app, lms, web3) {
   app.get(BASE_URL + "/", (req, res) => {
     res.send("Welcome to cross border payments");
   });
@@ -112,6 +137,9 @@ module.exports = function (app, lms, web3) {
       throw error;
     }
 
+    // decrease balance of account
+    deductBalance(req.body.accountFrom, amountToTransfer);
+
     // Expected response: transaction history object
     res.send("Transaction hash: " + hash);
   });
@@ -158,7 +186,7 @@ module.exports = function (app, lms, web3) {
 
     // Create send function
     const send = async (accountFromWalletAddr, accountFromPK, addressTo) => {
-        // check balance
+      // check balance
       var accountBalance = await lms.methods.balanceOf(accountFrom).call();
       if (amountToTransfer > Number(accountBalance)) {
         const error = "Balance not sufficient!";
@@ -172,7 +200,7 @@ module.exports = function (app, lms, web3) {
 
       // Sign transaction with PK
       const createTransaction = await web3.eth.accounts.signTransaction(
-        {  
+        {
           gas: 60000,
           to: contractAddress,
           data: data,
@@ -192,6 +220,9 @@ module.exports = function (app, lms, web3) {
 
     // perform transaction
     const hash = await send(accountFrom, accountFromPK, accountTo);
+
+    // increase balance of account
+    increaseBalance(req.body.accountTo, amountToTransfer);
 
     // Expected response: transaction history object
     res.send("Transaction hash: " + hash);
