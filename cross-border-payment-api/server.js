@@ -5,12 +5,8 @@ dotenv.config({ path: "./config/.env" });
 const app = express();
 const mongoose = require("mongoose");
 
-// const privateKeys = [
-//   "2272c2c88ac4da5cbfce93cdd932b90a401f118ca1728f27bb9b8d32800ef21e",
-//   "83f220e4facae332e0b5eba61ea3d9725d0a9a69be446833baaeeb7d5d69637d",
-//   "f2cec934251fc51007ef0df7be47949e745dcb90aa9a4179a1f0f408ff8ffda9",
-// ];
-const contractAddress = "0x1A9D660da99c095BF391690f4fE46B1Ff2CC197F";
+const contractAddress = process.env.pdcContractAddress;
+const fXContractAddr = process.env.fXContractAddr;
 
 // Body Parser
 app.use(express.urlencoded({ extended: true }));
@@ -23,37 +19,50 @@ app.set("trust proxy", true);
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require("web3");
-const contract = require("truffle-contract");
-const artifacts = require("./build/contracts/PandaCoin.json");
-// const privateKeys = require("./config/secrets");
+const privateKeys = require("./config/secrets.js");
 const fs = require("fs");
+
+if (typeof web3 !== "undefined") {
+  var web3 = new Web3(web3.currentProvider);
+} else {
+  // connect a eth node - on goerli
+  // const provider =
+  //   "https://eth-goerli.nownodes.io/6d0dc893-1c8d-449c-b2aa-5d5ab863a7c5";
+  // var web3 = new Web3(new Web3.providers.HttpProvider(provider));
+  
+  // connect a eth node - on local network
+  let host = new HDWalletProvider(
+    privateKeys,
+    "http://127.0.0.1:7545",
+    0,
+    3,
+    false
+  );
+
+  var web3 = new Web3(host);
+}
+
 const pandaCoinContract = JSON.parse(
   fs.readFileSync("./build/contracts/PandaCoin.json", "utf8")
 );
 const CONTRACT_ABI = pandaCoinContract.abi;
 
-if (typeof web3 !== "undefined") {
-  var web3 = new Web3(web3.currentProvider);
-} else {
-  // connect a eth node
-  const provider =
-    "https://eth-goerli.nownodes.io/6d0dc893-1c8d-449c-b2aa-5d5ab863a7c5";
-  var web3 = new Web3(new Web3.providers.HttpProvider(provider));
-  //   // connect a eth node
-  //   let host = new HDWalletProvider(
-  //     privateKeys,
-  //     "http://127.0.0.1:7545",
-  //     0,
-  //     3,
-  //     false
-  //   );
-
-  //   var web3 = new Web3(host);
-}
+const FXContract = JSON.parse(
+  fs.readFileSync("./build/contracts/CurrencyExchange.json", "utf8")
+);
+const FX_CONTRACT_ABI = FXContract.abi;
 
 // panda coin contract
-const LMS = new web3.eth.Contract(CONTRACT_ABI, contractAddress);
-LMS.setProvider(web3.currentProvider);
+const lms = new web3.eth.Contract(CONTRACT_ABI, contractAddress);
+lms.setProvider(web3.currentProvider);
+
+// currency exchange contract
+const FX_LMS = new web3.eth.Contract(FX_CONTRACT_ABI, fXContractAddr);
+FX_LMS.setProvider(web3.currentProvider);
+
+console.log(lms._address);
+console.log(FX_LMS._address);
+console.log("==== check contract is deployed ====");
 
 mongoose
   .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -61,15 +70,12 @@ mongoose
     console.log("DB connected");
     // const db = client.db("Cluster0");
     const accounts = await web3.eth.getAccounts();
-    // const lms = await LMS.deployed();
-    const lms = LMS;
 
-      // routes
-      require("./routes/index")(app, lms, accounts);
-      require("./routes/payments")(app, CONTRACT_ABI, web3, accounts);
-      require("./routes/auth")(app);
-      require("./routes/user.routes")(app);
-      require("./routes/account")(app);
+    // routes
+    require("./routes/index")(app, lms, accounts);
+    require("./routes/payments")(app, CONTRACT_ABI, web3, accounts);
+    require("./routes/auth")(app);
+    require("./routes/account")(app, FX_LMS);
 
     // Server Setup
     const PORT = process.env.PORT || 3333;
