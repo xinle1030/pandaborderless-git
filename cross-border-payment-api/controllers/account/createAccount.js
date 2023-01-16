@@ -53,13 +53,7 @@ module.exports = (req, res) => {
         res.status(500).send({ message: err });
         return;
       }
-      res.send({
-        message:
-          "Account " +
-          account.accountNumber +
-          " was registered successfully for " +
-          user.username,
-      });
+      return res.json(account);
     });
   });
 };
