@@ -52,31 +52,12 @@ module.exports = function (app, lms, web3) {
   app.put(BASE_URL + "/confirm", async (req, res) => {
     // Transfer a value between accounts informed
 
-    /**
-     * AccountTo, AccountFrom, TransferAmount
-     */
-
+    // AccountTo, AccountFrom, TransferAmount
     const amountToTransfer = req.body.amountToTransfer;
     let accountFrom;
     let accountFromPK;
     let accountTo;
 
-    /**
-     * Future TODO - a separate function
-     *
-     * currency exchange
-     * check accountTo currency and accountFrom currency
-     * if different currency, convert to accountTo currency using an external exchange rate API
-     */
-
-    /**
-     * Future TODO - 1-1 peg currency to pandacoin
-     *
-     */
-
-    /**
-     * To do
-     */
     // get PK and wallet address of from wallet
     const sender = await retrieveDocumentByAccountNumber(PANDA_ACC);
     accountFromPK = sender.walletPKHash;
@@ -147,31 +128,13 @@ module.exports = function (app, lms, web3) {
   app.put(BASE_URL + "/retrieve", async (req, res) => {
     // Transfer a value between accounts informed
 
-    /**
-     * AccountTo, TransferAmount
-     */
+    // AccountTo, TransferAmount
 
     const amountToTransfer = req.body.amountToTransfer;
     let accountFromPK;
     let accountFrom;
     let accountTo;
 
-    /**
-     * Future TODO - a separate function
-     *
-     * currency exchange
-     * check accountTo currency and accountFrom currency
-     * if different currency, convert to accountTo currency using an external exchange rate API
-     */
-
-    /**
-     * Future TODO - 1-1 peg currency to pandacoin
-     *
-     */
-
-    /**
-     * To do
-     */
     // get PK and wallet address of from wallet
     const sender = await retrieveDocumentByAccountNumber(req.body.accountTo);
     accountFromPK = sender.walletPKHash;
