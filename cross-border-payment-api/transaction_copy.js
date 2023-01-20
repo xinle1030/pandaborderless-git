@@ -9,14 +9,6 @@ const pandaCoinContract = JSON.parse(
 const CONTRACT_ABI = pandaCoinContract.abi;
 //const CONTRACT_ABI = require("./ABI");
 
-// Input variables
-const contractAddress = "0x92F283FaC9b77c0a91C320fFA921b7423294D3da"; // PandaCoin contract on Goerli Testnet
-
-const privateKey =
-  "4f0b6e7d3217fc93e062f6b3d6dc0cb53278870bf1f02fb8ab86d317eadcd07a"; // lilmeow's metamask account PK
-const account_address_from = "0x973C7Bb7AB40C15Ae4d248e4034878e0Df3f92c8"; // lilmeow's metamask address with many panda coins
-const account_address_to = "0xE4f4b37F70fEDAA6F2Eea10995a09fC4C16986Da"; // lilmeow2's metamask address with little panda coins
-
 // reconstruct inputs
 const accountFrom = {
   privateKey: privateKey,

@@ -26,20 +26,20 @@ if (typeof web3 !== "undefined") {
   var web3 = new Web3(web3.currentProvider);
 } else {
   // connect a eth node - on goerli
-  // const provider =
-  //   "https://eth-goerli.nownodes.io/6d0dc893-1c8d-449c-b2aa-5d5ab863a7c5";
-  // var web3 = new Web3(new Web3.providers.HttpProvider(provider));
+  const provider =
+    "https://eth-goerli.nownodes.io/6d0dc893-1c8d-449c-b2aa-5d5ab863a7c5";
+  var web3 = new Web3(new Web3.providers.HttpProvider(provider));
   
   // connect a eth node - on local network
-  let host = new HDWalletProvider(
-    privateKeys,
-    "http://127.0.0.1:7545",
-    0,
-    3,
-    false
-  );
+//   let host = new HDWalletProvider(
+//     privateKeys,
+//     "http://127.0.0.1:7545",
+//     0,
+//     3,
+//     false
+//   );
 
-  var web3 = new Web3(host);
+//   var web3 = new Web3(host);
 }
 
 const pandaCoinContract = JSON.parse(

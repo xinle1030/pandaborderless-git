@@ -11,7 +11,7 @@ module.exports = function (app) {
       "x-access-token, Origin, Content-Type, Accept"
     );
     next();
-  });
+  }); 
 
   app.post(
     BASE_URL + "/signup",
