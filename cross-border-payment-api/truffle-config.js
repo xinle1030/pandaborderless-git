@@ -61,13 +61,13 @@ module.exports = {
    */
 
   networks: {
-    besu: {
-      // must be a thunk, otherwise truffle commands may hang in CI
-      //start from first address in the array to deploy the contract, generate 3 addresses in total
-      provider: () =>
-        new HDWalletProvider(privateKeys, "http://127.0.0.1:7545", 0, 3),
-      network_id: "*",
-    },
+    // besu: {
+    //   // must be a thunk, otherwise truffle commands may hang in CI
+    //   //start from first address in the array to deploy the contract, generate 3 addresses in total
+    //   provider: () =>
+    //     new HDWalletProvider(privateKeys, "http://127.0.0.1:7545", 0, 3),
+    //   network_id: "*",
+    // },
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache, geth, or parity) in a separate terminal
