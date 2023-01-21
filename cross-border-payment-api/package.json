@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "besu": "besu --network=dev --miner-enabled --miner-coinbase=0xfe3b557e8fb62b89f4916b721be55ceb828dbd73 --rpc-http-cors-origins='all' --host-allowlist='*' --rpc-ws-enabled --rpc-http-enabled --data-path=/tmp/tmpDatdir",
+    "besu": "besu --network=goerli --rpc-http-enabled=true --rpc-http-host=0.0.0.0 --rpc-http-cors-origins='*' --rpc-ws-enabled=true --rpc-ws-host=0.0.0.0 --host-allowlist='*' --engine-host-allowlist='*' --engine-rpc-enabled --engine-jwt-secret='./config/jwtsecret.hex'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "build": "node server.js"
