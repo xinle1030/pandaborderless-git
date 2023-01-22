@@ -27,9 +27,10 @@ exports.deductBalance = async function (accountNumber, value) {
 // increase account balance
 exports.increaseBalance = async function (accountNumber, value) {
   try {
-    value = Math.round(Number(value));
-    value = Math.max(Math.min(value, 2147483647), -2147483648);
+    value = Number(value);
     if (isNaN(value)) throw new Error("Invalid value, it must be a number");
+    value = Math.round(value * 100) / 100;
+
     const account = await Account.findOne({ accountNumber });
     if (!account) throw new Error("Account not found.");
     account.balance += value;

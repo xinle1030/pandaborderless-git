@@ -194,7 +194,7 @@ module.exports = function (app, lms, web3) {
     const hash = await send(accountFrom, accountFromPK, accountTo);
 
     // calculate currency
-    const amountToIncrease = paymentFuncs.getCurrencyValue(
+    const amountToIncrease = await paymentFuncs.getCurrencyValue(
       req.body.accountTo,
       amountToTransfer
     );
