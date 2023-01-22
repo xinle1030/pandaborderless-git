@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config/.env" });
 const Account = require("../models/Account");
 const Transaction = require("../models/TransactionHistory");
+const paymentFuncs = require("../controllers/payment/payment");
 
 const BASE_URL = "/api/payments/crossborder";
 const contractAddress = process.env.pdcContractAddress;
@@ -59,11 +60,15 @@ module.exports = function (app, lms, web3) {
     let accountTo;
 
     // get PK and wallet address of from wallet
-    const sender = await retrieveDocumentByAccountNumber(PANDA_ACC);
+    const sender = await paymentFuncs.retrieveDocumentByAccountNumber(
+      PANDA_ACC
+    );
     accountFromPK = sender.walletPKHash;
     accountFrom = sender.walletAdrHash;
 
-    const receiver = await retrieveDocumentByAccountNumber(req.body.accountTo);
+    const receiver = await paymentFuncs.retrieveDocumentByAccountNumber(
+      req.body.accountTo
+    );
     accountTo = receiver.walletAdrHash;
 
     // create transfer data
@@ -119,7 +124,7 @@ module.exports = function (app, lms, web3) {
     }
 
     // decrease balance of account
-    deductBalance(req.body.accountFrom, amountToTransfer);
+    paymentFuncs.deductBalance(req.body.accountFrom, amountToTransfer);
 
     // Expected response: transaction history object
     res.send("Transaction hash: " + hash);
@@ -136,11 +141,15 @@ module.exports = function (app, lms, web3) {
     let accountTo;
 
     // get PK and wallet address of from wallet
-    const sender = await retrieveDocumentByAccountNumber(req.body.accountTo);
+    const sender = await paymentFuncs.retrieveDocumentByAccountNumber(
+      req.body.accountTo
+    );
     accountFromPK = sender.walletPKHash;
     accountFrom = sender.walletAdrHash;
 
-    const receiver = await retrieveDocumentByAccountNumber(PANDA_ACC);
+    const receiver = await paymentFuncs.retrieveDocumentByAccountNumber(
+      PANDA_ACC
+    );
     accountTo = receiver.walletAdrHash;
 
     // create transfer data
@@ -184,8 +193,14 @@ module.exports = function (app, lms, web3) {
     // perform transaction
     const hash = await send(accountFrom, accountFromPK, accountTo);
 
+    // calculate currency
+    const amountToIncrease = paymentFuncs.getCurrencyValue(
+      req.body.accountTo,
+      amountToTransfer
+    );
+
     // increase balance of account
-    increaseBalance(req.body.accountTo, amountToTransfer);
+    paymentFuncs.increaseBalance(req.body.accountTo, amountToIncrease);
 
     // Expected response: transaction history object
     res.send("Transaction hash: " + hash);
