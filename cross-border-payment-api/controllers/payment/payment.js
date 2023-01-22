@@ -1,4 +1,4 @@
-const Account = require("../models/Account");
+const Account = require("../../models/Account");
 
 // get account details
 exports.retrieveDocumentByAccountNumber = async function (accountNumber) {
@@ -27,6 +27,9 @@ exports.deductBalance = async function (accountNumber, value) {
 // increase account balance
 exports.increaseBalance = async function (accountNumber, value) {
   try {
+    value = Math.round(Number(value));
+    value = Math.max(Math.min(value, 2147483647), -2147483648);
+    if (isNaN(value)) throw new Error("Invalid value, it must be a number");
     const account = await Account.findOne({ accountNumber });
     if (!account) throw new Error("Account not found.");
     account.balance += value;
@@ -37,12 +40,15 @@ exports.increaseBalance = async function (accountNumber, value) {
   }
 };
 
-// get currecny and convert
+// get currency and convert
 exports.getCurrencyValue = async function (accountNumber, value) {
   try {
     const account = await Account.findOne({ accountNumber });
     if (!account) throw new Error("Account not found.");
     const convertedValue = convertCurrency(value, account.currency);
+    console.log("==== Converting currency ====")
+    console.log(convertedValue)
+    console.log(typeof convertedValue)
     return convertedValue;
   } catch (error) {
     throw error;
