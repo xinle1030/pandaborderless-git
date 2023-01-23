@@ -72,7 +72,7 @@ module.exports = function (app, lms, web3) {
     accountTo = receiver.walletAdrHash;
 
     // create transfer data
-    const amount = web3.utils.toBN(amountToTransfer);
+    const amount = web3.utils.toBN(Number(amountToTransfer)*100);
     const data = lms.methods.transfer(accountTo, amount).encodeABI();
 
     // Create send function
@@ -153,7 +153,7 @@ module.exports = function (app, lms, web3) {
     accountTo = receiver.walletAdrHash;
 
     // create transfer data
-    const amount = web3.utils.toBN(amountToTransfer);
+    const amount = web3.utils.toBN(Number(amountToTransfer)*100);
     const data = lms.methods.transfer(accountTo, amount).encodeABI();
 
     // Create send function
