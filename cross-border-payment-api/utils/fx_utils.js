@@ -1,4 +1,3 @@
-const Account = require("../models/Account");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config/.env" });
 
