@@ -18,14 +18,45 @@ const retrieveDocumentByAccountNumber = async (accountNumber) => {
 const getPDCOwner = async () => {
   // get PK and wallet address of from wallet
   const owner = await retrieveDocumentByAccountNumber(PANDA_ACC);
-
-  ownerWallet = owner.walletAdrHash;
-  ownerPK = owner.walletPKHash;
   
-  return { ownerWallet, ownerPK };
+  return owner;
+};
+
+// deduct account balance
+const deductBalance = async (accountNumber, value) => {
+  try {
+    const account = await Account.findOne({ accountNumber });
+    if (!account) throw new Error("Account not found.");
+    account.balance -= value;
+    await account.save();
+    console.log("balance deducted");
+    return account;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// increase account balance
+const increaseBalance = async (accountNumber, value) => {
+  try {
+    value = Number(value);
+    if (isNaN(value)) throw new Error("Invalid value, it must be a number");
+    value = Math.round(value * 100) / 100;
+
+    const account = await Account.findOne({ accountNumber });
+    if (!account) throw new Error("Account not found.");
+    account.balance += value;
+    await account.save();
+    console.log("balance increased");
+    return account;
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = {
   retrieveDocumentByAccountNumber,
   getPDCOwner,
+  deductBalance,
+  increaseBalance,
 };
