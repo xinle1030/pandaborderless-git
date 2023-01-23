@@ -5,7 +5,7 @@ const updateAccount = require("../controllers/account/updateAccount");
 
 const BASE_URL = "/api/account";
 
-module.exports = function (app, FX_LMS) {
+module.exports = function (app, lms, web3) {
   app.use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
@@ -22,8 +22,13 @@ module.exports = function (app, FX_LMS) {
 
   app.get(BASE_URL + "/:accountNumber", [authJwt.verifyToken], viewAccount);
 
-  app.put(BASE_URL + "/transfer", [authJwt.verifyToken], (req, res) => {
-    console.log(FX_LMS._address);
-    updateAccount(req, res, FX_LMS);
+  // app.put(BASE_URL + "/transfer", [authJwt.verifyToken], (req, res) => {
+  //   console.log(LMS._address);
+  //   updateAccount(req, res, LMS);
+  // });
+
+  app.put(BASE_URL + "/transfer", (req, res) => {
+    console.log(lms._address);
+    updateAccount(req, res, lms, web3);
   });
 };
