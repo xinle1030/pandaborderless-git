@@ -91,9 +91,8 @@
 }
 ```
 
-### payments.js
 ```http
-  PUT /api/payments/crossborder/confirm
+  PUT /api/account/transfer
 ```
 
 | Parameter           | Type     | Description        |
@@ -101,25 +100,6 @@
 | `accountFrom`       | `string` | sender's account   |
 | `accountTo`         | `string` | receiver's account |
 | `amountToTransfer`  | `int`    | value to transfer  |
-
-**Response:**
-```
-{Transaction hash: "string"}
-```
-
-```http
-  PUT /api/payments/crossborder/retrieve
-```
-
-| Parameter           | Type     | Description        |
-| :--------           | :------- | :----------------- |
-| `accountTo`         | `string` | receiver's account |
-| `amountToTransfer`  | `int`    | value to retrieve  |
-
-**Response:**
-```
-{Transaction hash: "string"}
-```
 
 ### transaction.js
 ```http
@@ -129,8 +109,8 @@
 ```
 {
   [{
-      accountFrom: "string",
-      accountTo: "string",
+      accountFrom: ObjectId,
+      accountTo: ObjectId,
       transactionAmount: number,
       timestamp: "string",
       meta: {
@@ -152,8 +132,8 @@
 **Response:**
 ```
 {
-      accountFrom: "string",
-      accountTo: "string",
+      accountFrom: ObjectId,
+      accountTo: ObjectId,
       transactionAmount: number,
       timestamp: "string",
       meta: {
