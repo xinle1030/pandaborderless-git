@@ -53,7 +53,9 @@ const FXContract = JSON.parse(
 const FX_CONTRACT_ABI = FXContract.abi;
 
 // panda coin contract
-const lms = new web3.eth.Contract(CONTRACT_ABI, contractAddress);
+const lms = new web3.eth.Contract(CONTRACT_ABI, contractAddress, {
+  gasPrice: "60000", // default gas price in wei, 20 gwei in this case
+});
 lms.setProvider(web3.currentProvider);
 
 // currency exchange contract
@@ -76,7 +78,7 @@ mongoose
     require("./routes/payments")(app, lms, web3);
     require("./routes/auth")(app);
     require("./routes/transaction")(app);
-    require("./routes/account")(app, FX_LMS);
+    require("./routes/account")(app, lms);
 
     // Server Setup
     const PORT = process.env.PORT || 3333;
