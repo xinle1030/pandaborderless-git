@@ -23,7 +23,8 @@ const transactionHistorySchema = new mongoose.Schema({
   },
   meta: {
     currency: { type: String },
-    transactionHash: { type: String, required: true },
+    txnHash1: { type: String, required: true },
+    txnHash2: { type: String, required: true },
   },
 });
 
