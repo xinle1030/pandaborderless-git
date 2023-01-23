@@ -46,6 +46,7 @@ exports.getCurrencyValue = async function (accountNumber, value) {
   try {
     const account = await Account.findOne({ accountNumber });
     if (!account) throw new Error("Account not found.");
+    value = value / 100;
     const convertedValue = convertCurrency(value, account.currency);
     console.log("==== Converting currency ====")
     console.log(convertedValue)
