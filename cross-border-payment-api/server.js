@@ -6,7 +6,6 @@ const app = express();
 const mongoose = require("mongoose");
 
 const contractAddress = process.env.pdcContractAddress;
-const fXContractAddr = process.env.fXContractAddr;
 
 // Body Parser
 app.use(express.urlencoded({ extended: true }));
@@ -17,9 +16,7 @@ app.use(cors());
 
 app.set("trust proxy", true);
 
-const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require("web3");
-const privateKeys = require("./config/secrets.js");
 const fs = require("fs");
 
 if (typeof web3 !== "undefined") {
@@ -29,17 +26,6 @@ if (typeof web3 !== "undefined") {
   const provider =
     "https://eth-goerli.nownodes.io/6d0dc893-1c8d-449c-b2aa-5d5ab863a7c5";
   var web3 = new Web3(new Web3.providers.HttpProvider(provider));
-  
-  // connect a eth node - on local network
-//   let host = new HDWalletProvider(
-//     privateKeys,
-//     "http://127.0.0.1:7545",
-//     0,
-//     3,
-//     false
-//   );
-
-//   var web3 = new Web3(host);
 }
 
 const pandaCoinContract = JSON.parse(
@@ -47,35 +33,22 @@ const pandaCoinContract = JSON.parse(
 );
 const CONTRACT_ABI = pandaCoinContract.abi;
 
-const FXContract = JSON.parse(
-  fs.readFileSync("./build/contracts/CurrencyExchange.json", "utf8")
-);
-const FX_CONTRACT_ABI = FXContract.abi;
-
 // panda coin contract
 const lms = new web3.eth.Contract(CONTRACT_ABI, contractAddress, {
   gasPrice: "60000", // default gas price in wei, 20 gwei in this case
 });
 lms.setProvider(web3.currentProvider);
 
-// currency exchange contract
-const FX_LMS = new web3.eth.Contract(FX_CONTRACT_ABI, fXContractAddr);
-FX_LMS.setProvider(web3.currentProvider);
-
 console.log(lms._address);
-console.log(FX_LMS._address);
 console.log("==== check contract is deployed ====");
 
 mongoose
   .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(async () => {
     console.log("DB connected");
-    // const db = client.db("Cluster0");
-    const accounts = await web3.eth.getAccounts();
 
     // routes
     require("./routes/index")(app);
-    require("./routes/payments")(app, lms, web3);
     require("./routes/auth")(app);
     require("./routes/transaction")(app);
     require("./routes/account")(app, lms, web3);
