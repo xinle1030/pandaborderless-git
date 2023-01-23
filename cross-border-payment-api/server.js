@@ -78,7 +78,7 @@ mongoose
     require("./routes/payments")(app, lms, web3);
     require("./routes/auth")(app);
     require("./routes/transaction")(app);
-    require("./routes/account")(app, lms);
+    require("./routes/account")(app, lms, web3);
 
     // Server Setup
     const PORT = process.env.PORT || 3333;
