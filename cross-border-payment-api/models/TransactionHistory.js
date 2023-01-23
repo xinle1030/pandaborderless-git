@@ -3,10 +3,12 @@ const mongoose = require("mongoose");
 const transactionHistorySchema = new mongoose.Schema({
   // The user associated with the transaction
   accountFrom: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Account",
   },
   accountTo: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Account",
   },
   exchangeRate: {
     type: Number,
