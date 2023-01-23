@@ -70,7 +70,7 @@ module.exports = async (req, res, lms, web3) => {
           sender,
           receiver,
           amountToTransfer,
-          hash1
+          hash1, hash2
         );
 
         await session.commitTransaction();

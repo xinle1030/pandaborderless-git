@@ -50,7 +50,7 @@ const createTxnHistory = async (
   sender,
   receiver,
   amountToTransfer,
-  txnHash
+  hash1, hash2
 ) => {
   // create transaction history
   const transactionData = {
@@ -60,7 +60,8 @@ const createTxnHistory = async (
     timestamp: new Date().toISOString(),
     meta: {
       currency: sender.currency,
-      transactionHash: txnHash,
+      txnHash1: hash1,
+      txnHash2: hash2
     },
   };
 
