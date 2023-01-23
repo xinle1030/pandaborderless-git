@@ -4,7 +4,10 @@ module.exports = (req, res) => {
   console.log("Get transaction by Hash");
 
   Transaction.findOne({
-    "meta.transactionHash": req.params.transactionHash,
+    $or: [
+      { "meta.txnHash1": req.params.transactionHash },
+      { "meta.txnHash2": req.params.transactionHash },
+    ],
   }).exec((err, transaction) => {
     if (err) {
       res.status(500).send({ message: err });
