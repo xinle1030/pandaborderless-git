@@ -430,7 +430,6 @@ export default function TransactionPage() {
   const [progress, setProgress] = useState(25);
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  console.log(process.env.REACT_APP_API_URL);
   const handleSubmit = async () => {
     setIsLoading(true);
     const response = await fetch(
