@@ -433,17 +433,6 @@ export default function TransactionPage() {
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
     setIsLoading(true);
-    // const response = await fetch(`/api/account/transfer`, {
-    //   method: 'PUT',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   // TODO: remove hardcode
-    //   body: JSON.stringify({
-    //     accountFrom: '4510',
-    //     accountTo: '4510',
-    //     amountToTransfer: 1,
-    //   }),
-    // });
-
     try {
       const response = await axios.put(`/api/account/transfer`, {
         accountFrom: '4510',
@@ -498,7 +487,6 @@ export default function TransactionPage() {
     } catch (error) {
       console.error(error);
     }
-
     setIsLoading(false);
   };
 
