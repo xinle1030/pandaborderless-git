@@ -433,7 +433,7 @@ export default function TransactionPage() {
   const handleSubmit = async () => {
     setIsLoading(true);
     const response = await fetch(
-      process.env.API_URL + '/api/account/transfer',
+      process.env.REACT_APP_API_URL + '/api/account/transfer',
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
