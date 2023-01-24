@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/icons';
 import Wallet from './Wallet';
 import { ReactComponent as PandaIcon } from '../assets/logo.svg';
-import { Link as ReactLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 const GlobeIcon = props => (
   <Icon viewBox="0 0 420 420" {...props}>
@@ -130,8 +130,8 @@ const DesktopNav = () => {
             <PopoverTrigger>
               <Link
                 p={2}
-                as={ReactLink}
-                to={navItem.href ?? '#'}
+                as={RouterLink}
+                to={navItem.href}
                 fontSize={'sm'}
                 fontWeight={500}
                 color={linkColor}
@@ -285,6 +285,7 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: 'Link 2',
+    href: '#',
   },
   {
     label: 'Link 3',

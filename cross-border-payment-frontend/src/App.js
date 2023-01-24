@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 
 import theme from './theme';
@@ -15,12 +15,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 
 import { NavBar } from './components/NavBar';
 import { Footer } from './components/Footer';
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import TransactionPage from './pages/TransactionPage';
 import NotFound from './pages/NotFound';
@@ -61,23 +56,19 @@ const client = createClient({
   webSocketProvider,
 });
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route path="*" element={<NotFound />} />
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/transaction" element={<TransactionPage />} />
-    </>
-  )
-);
-
 function App() {
   return (
     <WagmiConfig client={client}>
       <ChakraProvider theme={theme}>
-        <NavBar />
-        <RouterProvider router={router} />
-        <Footer />
+        <Router>
+          <NavBar />
+          <Routes>
+            <Route path="*" element={<NotFound />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/transaction" element={<TransactionPage />} />
+          </Routes>
+          <Footer />
+        </Router>
       </ChakraProvider>
     </WagmiConfig>
   );
