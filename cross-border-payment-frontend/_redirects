@@ -1,1 +1,1 @@
-/api/* http://panda-alb-279443553.ap-southeast-1.elb.amazonaws.com/:splat 200!
+/api/* http://panda-alb-279443553.ap-southeast-1.elb.amazonaws.com/:splat 200
