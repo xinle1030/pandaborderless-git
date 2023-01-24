@@ -14,11 +14,10 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 
 import { NavBar } from './components/NavBar';
+import { Footer } from './components/Footer';
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  BrowserRouter as Router,
-  Routes,
   Route,
   RouterProvider,
 } from 'react-router-dom';
@@ -78,6 +77,7 @@ function App() {
       <ChakraProvider theme={theme}>
         <NavBar />
         <RouterProvider router={router} />
+        <Footer />
       </ChakraProvider>
     </WagmiConfig>
   );

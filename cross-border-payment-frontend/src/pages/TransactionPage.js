@@ -23,23 +23,18 @@ import {
   Container,
   Grid,
   GridItem,
+  Link,
   Checkbox,
 } from '@chakra-ui/react';
 
 import { useToast } from '@chakra-ui/react';
-import { ArrowDownIcon, InfoIcon } from '@chakra-ui/icons';
+import { ArrowDownIcon, CheckCircleIcon, InfoIcon } from '@chakra-ui/icons';
+import Confetti from '../components/Confetti';
+import { Link as RouterLink } from 'react-router-dom';
 
-// Form 1: Verification
-// Form 2: Confirm Payment
-// Form 3: Recipient Information
-// Form 4: Transaction Summary
+const DataContext = createContext({});
 
-const DataContext = createContext({
-  sFirstName: '',
-  sLastName: '',
-});
-
-const Verification = () => {
+const VerificationForm = () => {
   const { data, setData } = useContext(DataContext);
   const onHandle = e => {
     const { id, value } = e.target;
@@ -48,8 +43,8 @@ const Verification = () => {
 
   return (
     <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
-        User Verification
+      <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="4">
+        Step 1: User Verification
       </Heading>
       <FormControl mr="5%">
         <FormLabel htmlFor="firstName" fontWeight={'normal'}>
@@ -124,7 +119,7 @@ const Verification = () => {
   );
 };
 
-const Form2 = () => {
+const CurrencyExchange = () => {
   const [amount, setAmount] = useState(1000);
   const [convertedAmount, setConvertedAmount] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0.786);
@@ -139,12 +134,9 @@ const Form2 = () => {
 
   return (
     <>
-      <Heading
-        w="100%"
-        textAlign={'center'}
-        fontWeight="normal"
-        mb="2%"
-      ></Heading>
+      <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="4">
+        Step 2: Enter Amount and Select Currency
+      </Heading>
 
       <InputGroup mb={2}>
         <InputLeftElement
@@ -158,7 +150,6 @@ const Form2 = () => {
           placeholder="You send"
           size="lg"
           onChange={handleChange}
-          defaultValue={amount}
           value={amount}
         />
         <Select defaultValue={'SGD'} size="lg" ml={'2'} w={'50%'}>
@@ -199,8 +190,8 @@ const RecipientInfo = () => {
   };
   return (
     <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal">
-        Recipient Information
+      <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="4">
+        Step 3: Recipient Information
       </Heading>
       <SimpleGrid columns={1} spacing={6}>
         <FormControl mt="2%">
@@ -277,7 +268,7 @@ const Summary = () => {
   const { data, setData } = useContext(DataContext);
   return (
     <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal">
+      <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="4">
         Transaction Summary
       </Heading>
       <Container maxW={'7xl'}>
@@ -292,7 +283,7 @@ const Summary = () => {
                 />
               }
             >
-              <Box textAlign="center" pt={6} px={6}>
+              <Box textAlign="center" pt={4} px={6}>
                 <InfoIcon boxSize={'50px'} color={'blue.500'} />
                 <Heading as="h2" size="lg" mt={6} mb={2}>
                   Re-check the details & confirm transfer request.
@@ -415,11 +406,91 @@ const Summary = () => {
   );
 };
 
+const TransactionCompleted = () => {
+  return (
+    <Container display="flex" maxW={'7xl'} flexDirection={'column'}>
+      <Confetti />
+      <Box textAlign="center" py={4} px={6}>
+        <CheckCircleIcon boxSize={'50px'} color={'green.500'} />
+        <Heading as="h2" size="lg" mt={6} mb={2}>
+          Transaction successfully completed.
+        </Heading>
+        {/* TODO: add txn hash and id here */}
+      </Box>
+      <Link mx="auto" textAlign={'center'} w="auto" as={RouterLink} to="/">
+        Back to home
+      </Link>
+    </Container>
+  );
+};
+
 export default function TransactionPage() {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(25);
   const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    const response = await fetch(
+      process.env.API_URL + '/api/account/transfer',
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        // TODO: remove hardcode
+        body: JSON.stringify({
+          accountFrom: '4510',
+          accountTo: '4510',
+          amountToTransfer: 1,
+        }),
+      }
+    );
+    if (!response.ok) {
+      toast({
+        title: 'Error.',
+        description: 'An error occurred while processing your request',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+    // if (
+    //   response.headers.get('content-type').indexOf('application/json') === -1
+    // ) {
+    //   toast({
+    //     title: 'Error.',
+    //     description: 'An error occurred while processing your request',
+    //     status: 'error',
+    //     duration: 3000,
+    //     isClosable: true,
+    //   });
+    //   console.log(response.json());
+    //   setIsLoading(false);
+    //   return;
+    // }
+    const json = await response;
+    if (response.ok) {
+      toast({
+        title: 'Success.',
+        description: 'Transaction completed successfully.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+      setStep(5);
+    } else {
+      toast({
+        title: 'Error.',
+        description: json.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    setIsLoading(false);
+  };
 
   return (
     <DataContext.Provider value={{ data, setData }}>
@@ -429,24 +500,29 @@ export default function TransactionPage() {
         shadow="1px 1px 3px rgba(0,0,0,0.3)"
         maxWidth={800}
         p={6}
-        m="10px auto"
+        mx="auto"
+        my="10"
         as="form"
       >
-        <hasStripe
+        <Progress
+          hasStripe
           value={progress}
           colorScheme="secondary"
           mb="5%"
           mx="5%"
           isAnimated
+          display={step === 5 ? 'none' : 'block'}
         />
         {step === 1 ? (
-          <Verification />
+          <VerificationForm />
         ) : step === 2 ? (
-          <Form2 />
+          <CurrencyExchange />
         ) : step === 3 ? (
           <RecipientInfo />
-        ) : (
+        ) : step === 4 ? (
           <Summary />
+        ) : (
+          <TransactionCompleted />
         )}
         <ButtonGroup mt="5%" w="100%">
           <Flex w="100%" justifyContent="space-between">
@@ -456,18 +532,17 @@ export default function TransactionPage() {
                   setStep(step - 1);
                   setProgress(progress - 25);
                 }}
-                display={step === 1 ? 'none' : 'block'}
+                display={(step === 1) | (step === 5) ? 'none' : 'block'}
                 colorScheme="secondary"
                 variant="outline"
                 w="7rem"
-                _hidden={step === 1}
                 mr="5%"
               >
                 Back
               </Button>
               <Button
                 w="7rem"
-                display={step === 4 ? 'none' : 'block'}
+                display={(step === 4) | (step === 5) ? 'none' : 'block'}
                 onClick={() => {
                   setStep(step + 1);
                   if (step === 4) {
@@ -487,15 +562,8 @@ export default function TransactionPage() {
                 w="7rem"
                 colorScheme="green"
                 variant="solid"
-                onClick={() => {
-                  toast({
-                    title: 'Success.',
-                    description: 'Transaction completed successfully.',
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                  });
-                }}
+                onClick={handleSubmit}
+                isLoading={isLoading}
               >
                 Submit
               </Button>

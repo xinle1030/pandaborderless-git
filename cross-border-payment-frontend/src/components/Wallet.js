@@ -7,7 +7,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 import { CloseIcon } from '@chakra-ui/icons';
 
 export default function Wallet() {
-  const { address, isConnected, connector } = useAccount();
+  const { address, isConnected } = useAccount();
   const [isSSR, setIsSSR] = useState(true);
   const { connect } = useConnect({
     connector: new InjectedConnector(),

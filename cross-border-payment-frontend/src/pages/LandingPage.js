@@ -9,87 +9,237 @@ import {
   createIcon,
   IconProps,
   useColorModeValue,
+  StackDivider,
+  SimpleGrid,
+  Image,
+  Box,
 } from '@chakra-ui/react';
+
+import {
+  IoAnalyticsSharp,
+  IoLogoBitcoin,
+  IoSearchSharp,
+} from 'react-icons/io5';
+
+import { FcAssistant, FcDonate, FcInTransit } from 'react-icons/fc';
+
 import CurrencyConverter from '../components/CurrencyConverter';
+
+const Feature = ({ text, icon, iconBg }) => {
+  return (
+    <Stack direction={'row'} align={'center'}>
+      <Flex
+        w={8}
+        h={8}
+        align={'center'}
+        justify={'center'}
+        rounded={'full'}
+        bg={iconBg}
+      >
+        {icon}
+      </Flex>
+      <Text fontWeight={600}>{text}</Text>
+    </Stack>
+  );
+};
+
+const Feature2 = ({ title, text, icon }) => {
+  return (
+    <Stack>
+      <Flex
+        w={'full'}
+        h={16}
+        align={'center'}
+        justify={'center'}
+        color={'white'}
+        rounded={'full'}
+        bg={'gray.100'}
+        mb={1}
+      >
+        {icon}
+      </Flex>
+      <Text fontWeight={600}>{title}</Text>
+      <Text color={'gray.600'}>{text}</Text>
+    </Stack>
+  );
+};
 
 export default function LandingPage() {
   return (
-    <Container maxW={'7xl'}>
-      <Stack
-        align={'center'}
-        spacing={{ base: 8, md: 10 }}
-        py={{ base: 20, md: 28 }}
-        direction={{ base: 'column', md: 'row' }}
-      >
-        <Stack flex={1} spacing={{ base: 5, md: 10 }}>
-          <Heading
-            lineHeight={1.1}
-            fontWeight={600}
-            fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
-          >
-            <Text
-              as={'span'}
-              position={'relative'}
-              _after={{
-                content: "''",
-                width: 'full',
-                height: '30%',
-                position: 'absolute',
-                bottom: 1,
-                left: 0,
-                bg: 'secondary.400',
-                zIndex: -1,
-              }}
-            >
-              Get ready to be
-            </Text>
-            <br />
-            <Text as={'span'} color={'secondary.400'}>
-              bamboo-zled
-            </Text>
-          </Heading>
-          <Text color={'gray.500'}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-          </Text>
-          <Stack
-            spacing={{ base: 4, sm: 6 }}
-            direction={{ base: 'column', sm: 'row' }}
-          >
-            <Button
-              rounded={'full'}
-              size={'lg'}
-              fontWeight={'normal'}
-              px={6}
-              leftIcon={<PlayIcon h={4} w={4} color={'gray.300'} />}
-            >
-              How It Works
-            </Button>
-          </Stack>
-        </Stack>
-        <Flex
-          flex={1}
-          justify={'center'}
+    <Box overflow={'hidden'}>
+      <Container maxW={'6xl'}>
+        <Stack
           align={'center'}
-          position={'relative'}
-          w={'full'}
+          spacing={{ base: 8, md: 10 }}
+          py={{ base: 20, md: 28 }}
+          direction={{ base: 'column', md: 'row' }}
         >
-          <Blob
-            w={'150%'}
-            h={'150%'}
-            position={'absolute'}
-            top={'-20%'}
-            left={0}
-            zIndex={-1}
-            color={useColorModeValue('secondary.50', 'secondary.400')}
-          />
+          <Stack flex={1} spacing={{ base: 5, md: 10 }}>
+            <Heading
+              lineHeight={1.1}
+              fontWeight={600}
+              fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+            >
+              <Text
+                as={'span'}
+                position={'relative'}
+                _after={{
+                  content: "''",
+                  width: 'full',
+                  height: '30%',
+                  position: 'absolute',
+                  bottom: 1,
+                  left: 0,
+                  bg: 'secondary.400',
+                  zIndex: -1,
+                }}
+              >
+                Break borders with
+              </Text>
+              <br />
+              <Text as={'span'} color={'secondary.400'}>
+                PandaBank
+              </Text>
+            </Heading>
+            <Text color={'gray.500'}>
+              PandaBank makes cross-border payments easy and affordable. With
+              our platform, you can send and receive payments to individuals and
+              businesses in other countries at competitive exchange rates and
+              low fees. Our platform is integrated into the Ethereum blockchain,
+              ensuring the safety and security of your transactions. Track the
+              status of your payments with ease and say goodbye to high
+              transaction fees.
+            </Text>
+            <Stack
+              spacing={{ base: 4, sm: 6 }}
+              direction={{ base: 'column', sm: 'row' }}
+            >
+              <Button
+                rounded={'full'}
+                size={'lg'}
+                fontWeight={'normal'}
+                px={6}
+                leftIcon={<PlayIcon h={4} w={4} color={'gray.300'} />}
+              >
+                How It Works
+              </Button>
+            </Stack>
+          </Stack>
+          <Flex
+            flex={1}
+            justify={'center'}
+            align={'center'}
+            position={'relative'}
+            w={'full'}
+          >
+            <Blob
+              w={'150%'}
+              h={'150%'}
+              position={'absolute'}
+              top={'-20%'}
+              left={0}
+              zIndex={-1}
+              color={useColorModeValue('secondary.50', 'secondary.400')}
+            />
 
-          <CurrencyConverter />
-        </Flex>
-      </Stack>
-    </Container>
+            <CurrencyConverter />
+          </Flex>
+        </Stack>
+      </Container>
+      <Container maxW={'6xl'} py={20}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+          <Stack spacing={4}>
+            <Text
+              textTransform={'uppercase'}
+              color={'blue.400'}
+              fontWeight={600}
+              fontSize={'sm'}
+              bg={useColorModeValue('blue.50', 'blue.900')}
+              p={2}
+              alignSelf={'flex-start'}
+              rounded={'md'}
+            >
+              Our Story
+            </Text>
+            <Heading>A digital Product design agency</Heading>
+            <Text color={'gray.500'} fontSize={'lg'}>
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+              nonumy eirmod tempor invidunt ut labore
+            </Text>
+            <Stack
+              spacing={4}
+              divider={
+                <StackDivider
+                  borderColor={useColorModeValue('gray.100', 'gray.700')}
+                />
+              }
+            >
+              <Feature
+                icon={
+                  <Icon
+                    as={IoAnalyticsSharp}
+                    color={'yellow.500'}
+                    w={5}
+                    h={5}
+                  />
+                }
+                iconBg={useColorModeValue('yellow.100', 'yellow.900')}
+                text={'Business Planning'}
+              />
+              <Feature
+                icon={
+                  <Icon as={IoLogoBitcoin} color={'green.500'} w={5} h={5} />
+                }
+                iconBg={useColorModeValue('green.100', 'green.900')}
+                text={'Financial Planning'}
+              />
+              <Feature
+                icon={
+                  <Icon as={IoSearchSharp} color={'purple.500'} w={5} h={5} />
+                }
+                iconBg={useColorModeValue('purple.100', 'purple.900')}
+                text={'Market Analysis'}
+              />
+            </Stack>
+          </Stack>
+          <Flex>
+            <Image
+              rounded={'md'}
+              alt={'feature image'}
+              src={
+                'https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+              }
+              objectFit={'cover'}
+            />
+          </Flex>
+        </SimpleGrid>
+      </Container>
+      <Container maxW={'6xl'} py={20}>
+        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+          <Feature2
+            icon={<Icon as={FcAssistant} w={10} h={10} />}
+            title={'Competitive Exchange Rates'}
+            text={
+              'Low Fees, High Savings: Enjoy competitive exchange rates with PandaBank'
+            }
+          />
+          <Feature2
+            icon={<Icon as={FcDonate} w={10} h={10} />}
+            title={'Multiple Currency Support: '}
+            text={
+              'Multiple Currency Support: Send and receive payments in different currencies with PandaBank'
+            }
+          />
+          <Feature2
+            icon={<Icon as={FcInTransit} w={10} h={10} />}
+            title={'Real-time Transaction Tracking'}
+            text={
+              'Stay Secure and Informed: Track your transactions in real-time with Ethereum Blockchain on PandaBank'
+            }
+          />
+        </SimpleGrid>
+      </Container>
+    </Box>
   );
 }
 
