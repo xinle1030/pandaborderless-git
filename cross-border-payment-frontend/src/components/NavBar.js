@@ -14,6 +14,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  textDecoration,
 } from '@chakra-ui/react';
 import {
   HamburgerIcon,
@@ -223,15 +224,13 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
 
   return (
     <Stack spacing={4} onClick={children && onToggle}>
-      <Flex
+      <Link
         py={2}
-        as={Link}
-        href={href ?? '#'}
-        justify={'space-between'}
-        align={'center'}
-        _hover={{
-          textDecoration: 'none',
-        }}
+        as={RouterLink}
+        to={href}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        _hover={{ textDecoration: 'none' }}
       >
         <Text
           fontWeight={600}
@@ -248,7 +247,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
             h={6}
           />
         )}
-      </Flex>
+      </Link>
 
       <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
         <Stack
