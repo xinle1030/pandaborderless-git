@@ -31,6 +31,7 @@ import { useToast } from '@chakra-ui/react';
 import { ArrowDownIcon, CheckCircleIcon, InfoIcon } from '@chakra-ui/icons';
 import Confetti from '../components/Confetti';
 import { Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
 
 const DataContext = createContext({});
 
@@ -432,60 +433,72 @@ export default function TransactionPage() {
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
     setIsLoading(true);
-    const response = await fetch(`/api/account/transfer`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      // TODO: remove hardcode
-      body: JSON.stringify({
+    // const response = await fetch(`/api/account/transfer`, {
+    //   method: 'PUT',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   // TODO: remove hardcode
+    //   body: JSON.stringify({
+    //     accountFrom: '4510',
+    //     accountTo: '4510',
+    //     amountToTransfer: 1,
+    //   }),
+    // });
+
+    try {
+      const response = await axios.put(`/api/account/transfer`, {
         accountFrom: '4510',
         accountTo: '4510',
         amountToTransfer: 1,
-      }),
-    });
-    if (!response.ok) {
-      toast({
-        title: 'Error.',
-        description: 'An error occurred while processing your request',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
       });
-      setIsLoading(false);
-      return;
+      console.log(response.data);
+      if (!response.ok) {
+        toast({
+          title: 'Error.',
+          description: 'An error occurred while processing your request',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+        setIsLoading(false);
+        return;
+      }
+      // if (
+      //   response.headers.get('content-type').indexOf('application/json') === -1
+      // ) {
+      //   toast({
+      //     title: 'Error.',
+      //     description: 'An error occurred while processing your request',
+      //     status: 'error',
+      //     duration: 3000,
+      //     isClosable: true,
+      //   });
+      //   console.log(response.json());
+      //   setIsLoading(false);
+      //   return;
+      // }
+      const json = await response;
+      if (response.ok) {
+        toast({
+          title: 'Success.',
+          description: 'Transaction completed successfully.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        setStep(5);
+      } else {
+        toast({
+          title: 'Error.',
+          description: json.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
-    // if (
-    //   response.headers.get('content-type').indexOf('application/json') === -1
-    // ) {
-    //   toast({
-    //     title: 'Error.',
-    //     description: 'An error occurred while processing your request',
-    //     status: 'error',
-    //     duration: 3000,
-    //     isClosable: true,
-    //   });
-    //   console.log(response.json());
-    //   setIsLoading(false);
-    //   return;
-    // }
-    const json = await response;
-    if (response.ok) {
-      toast({
-        title: 'Success.',
-        description: 'Transaction completed successfully.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-      setStep(5);
-    } else {
-      toast({
-        title: 'Error.',
-        description: json.message,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+
     setIsLoading(false);
   };
 
