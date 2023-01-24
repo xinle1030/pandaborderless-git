@@ -70,14 +70,23 @@ module.exports = async (req, res, lms, web3) => {
           sender,
           receiver,
           amountToTransfer,
-          hash1, hash2
+          hash1,
+          hash2
         );
 
         await session.commitTransaction();
         session.endSession();
 
         // Expected response: transaction history object
-        res.send("Transaction hash completed with: " + hash1 + ", " + hash2 + " from " + accountFrom + " to " + accountTo);
+        // res.send("Transaction hash completed with: " + hash1 + ", " + hash2 + " from " + accountFrom + " to " + accountTo);
+        res.json({
+          transactionHash: {
+            hash1: hash1,
+            hash2: hash2,
+          },
+          from: accountFrom,
+          to: accountTo,
+        });
       } catch (err) {
         await session.abortTransaction();
         session.endSession();
