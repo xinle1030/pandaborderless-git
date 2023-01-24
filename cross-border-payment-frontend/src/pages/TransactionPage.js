@@ -432,19 +432,16 @@ export default function TransactionPage() {
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
     setIsLoading(true);
-    const response = await fetch(
-      process.env.REACT_APP_API_URL + '/api/account/transfer',
-      {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        // TODO: remove hardcode
-        body: JSON.stringify({
-          accountFrom: '4510',
-          accountTo: '4510',
-          amountToTransfer: 1,
-        }),
-      }
-    );
+    const response = await fetch(`/api/account/transfer`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      // TODO: remove hardcode
+      body: JSON.stringify({
+        accountFrom: '4510',
+        accountTo: '4510',
+        amountToTransfer: 1,
+      }),
+    });
     if (!response.ok) {
       toast({
         title: 'Error.',
