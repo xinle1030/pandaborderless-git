@@ -29,8 +29,12 @@ module.exports = function (app, lms, web3) {
     viewAccountTxn
   );
 
-  app.put(BASE_URL + "/transfer", [authJwt.verifyToken], (req, res) => {
-    console.log(lms._address);
-    updateAccount(req, res, lms, web3);
-  });
+  app.put(
+    BASE_URL + "/transfer",
+    [authJwt.verifyToken, authJwt.verifyAcc],
+    (req, res) => {
+      console.log(lms._address);
+      updateAccount(req, res, lms, web3);
+    }
+  );
 };
