@@ -123,7 +123,7 @@
 - Must login for transferring money
  by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
 
-| Parameter           | Type     | Description        |
+| Request Body        | Type     | Description        |
 | :--------           | :------- | :----------------- |
 | `accountFrom`       | `string` | sender's account   |
 | `accountTo`         | `string` | receiver's account |
@@ -136,6 +136,7 @@
 
 - Must login to view a customer details
  by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
+
 **Response:**
 ```
 {
