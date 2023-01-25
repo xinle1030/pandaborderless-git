@@ -105,8 +105,8 @@
 **Response:**
 ```
 [{
-      accountFrom: ObjectId,
-      accountTo: ObjectId,
+      accountFrom: "AccountId",
+      accountTo: "AccountId",
       transactionAmount: number,
       timestamp: "string",
       meta: {
@@ -165,8 +165,8 @@
 **Response:**
 ```
 [{
-      accountFrom: ObjectId,
-      accountTo: ObjectId,
+      accountFrom: "AccountId",
+      accountTo: "AccountId",
       transactionAmount: number,
       timestamp: "string",
       meta: {
@@ -187,8 +187,8 @@
 **Response:**
 ```
 {
-      accountFrom: ObjectId,
-      accountTo: ObjectId,
+      accountFrom: "AccountId",
+      accountTo: "AccountId",
       transactionAmount: number,
       timestamp: "string",
       meta: {
