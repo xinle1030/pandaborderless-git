@@ -10,9 +10,6 @@ const transactionHistorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account",
   },
-  exchangeRate: {
-    type: Number,
-  },
   transactionAmount: {
     type: Number,
     required: true,
@@ -25,6 +22,14 @@ const transactionHistorySchema = new mongoose.Schema({
     currency: { type: String },
     txnHash1: { type: String, required: true },
     txnHash2: { type: String, required: true },
+    fxRate1: {
+      type: Number,
+      required: true,
+    },
+    fxRate2: {
+      type: Number,
+      required: true,
+    },
   },
 });
 
