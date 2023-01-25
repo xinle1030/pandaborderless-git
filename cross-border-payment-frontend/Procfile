@@ -1,1 +1,1 @@
-web: bin/boot
+web: node scripts/heroku-start.js
