@@ -66,7 +66,7 @@
   walletAdrHash: "string",
   walletPKHash: "string",
   balance: number,
-  ownerId: "CustomerId",
+  ownerId: "string",
   currency: "string",
 }
 ```
@@ -90,7 +90,7 @@
   walletAdrHash: "string",
   walletPKHash: "string",
   balance: number,
-  ownerId: "CustomerId",
+  ownerId: "string",
   currency: "string",
 }
 ```
@@ -178,7 +178,7 @@
       walletAdrHash: "string",
       walletPKHash: "string",
       balance: number,
-      ownerId: "CustomerId",
+      ownerId: "string",
       currency: "string",
     }
   ]
