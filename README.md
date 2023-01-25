@@ -17,9 +17,11 @@ To run this project, you will need to add the following environment variables to
 | :----------------------------- | :----------------------------------------------------------------------------------------- |
 | `DB`                           | Mongodb URI to connect the application to mongodb cluster                                  |
 | `pdcContractAddress`           | deployed panda coin contract address                                                       |
-| `fXContractAddr`               | deployed currency exchange contract address                                                |
 | `INFURA_API_KEY`               | API Key for Infura                                                                         |
 | `MNEMONIC`                     | Mnemonic for your account                                                                  |
+| `PDC_OWNER_ACC`           	 | panda coin contract owner - which is stored as a bank acc on database - 9250               |
+| `PEG_CURRENCY`                 | target currency to peg PDC onto                                                            |
+| `EXCHANGE_RATE_API_KEY`        | API key for https://api.apilayer.com/exchangerates_data/convert			                |                                                       
 
 ### Set up connection to MongoDB
 - Create a project and cluster on MongoDB
