@@ -2,6 +2,7 @@ const { authJwt, verifySignUp } = require("../middlewares");
 const createAccount = require("../controllers/account/createAccount");
 const viewAccount = require("../controllers/account/viewAccount");
 const updateAccount = require("../controllers/account/updateAccount");
+const viewAccountTxn = require("../controllers/account/viewAccountTxn");
 
 const BASE_URL = "/api/account";
 
@@ -21,6 +22,12 @@ module.exports = function (app, lms, web3) {
   );
 
   app.get(BASE_URL + "/:accountNumber", [authJwt.verifyToken], viewAccount);
+
+  app.get(
+    BASE_URL + "/:accountNumber/transaction",
+    [authJwt.verifyToken],
+    viewAccountTxn
+  );
 
   // app.put(BASE_URL + "/transfer", [authJwt.verifyToken], (req, res) => {
   //   console.log(LMS._address);
