@@ -446,8 +446,10 @@ export default function TransactionPage() {
     //   }
     // );
 
+    let response;
+
     await fetch(process.env.REACT_APP_API_URL + '/api/transaction/all')
-      .then(response => response.json())
+      .then(retResponse => response = retResponse.json())
       .then(result => {
         console.log(result);
       })
