@@ -92,23 +92,19 @@
 ```
 
 ```http
-  PUT /api/account/transfer
+  GET /api/account/:accountNumber/transaction
 ```
 
-| Parameter           | Type     | Description        |
-| :--------           | :------- | :----------------- |
-| `accountFrom`       | `string` | sender's account   |
-| `accountTo`         | `string` | receiver's account |
-| `amountToTransfer`  | `int`    | value to transfer  |
+- Must login for viewing transactions that your bank account has made
+ by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
 
-### transaction.js
-```http
-  GET /api/transaction
-```
+| Parameter             | Type     | Description         |
+| :--------             | :------- | :--------------     |
+| `accountNumber`       | `string` | Bank account number |
+
 **Response:**
 ```
-{
-  [{
+[{
       accountFrom: ObjectId,
       accountTo: ObjectId,
       transactionAmount: number,
@@ -117,8 +113,66 @@
         currency: "string",
         transactionHash: "string",
       },
-  }]
+}]
+```
+
+```http
+  PUT /api/account/transfer
+```
+
+- Must login for transferring money
+ by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
+
+| Parameter           | Type     | Description        |
+| :--------           | :------- | :----------------- |
+| `accountFrom`       | `string` | sender's account   |
+| `accountTo`         | `string` | receiver's account |
+| `amountToTransfer`  | `int`    | value to transfer  |
+
+### customer.js
+```http
+  GET /api/customer
+```
+
+- Must login to view a customer details
+ by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
+**Response:**
+```
+{
+  _id: string,
+  username: string,
+  email: string,
+  password: "string",
+  accounts: [
+    {
+      accountNumber: "string",
+      walletAdrHash: "string",
+      walletPKHash: "string",
+      balance: number,
+      ownerId: "CustomerId",
+      currency: "string",
+    }
+  ]
 }
+```
+
+
+### transaction.js
+```http
+  GET /api/transaction/all
+```
+**Response:**
+```
+[{
+      accountFrom: ObjectId,
+      accountTo: ObjectId,
+      transactionAmount: number,
+      timestamp: "string",
+      meta: {
+        currency: "string",
+        transactionHash: "string",
+      },
+}]
 ```
 
 ```http
