@@ -446,25 +446,24 @@ export default function TransactionPage() {
     //   }
     // );
 
-    const response = await fetch(
-      process.env.REACT_APP_API_URL + '/api/transaction/all',
-      {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-    console.log(response.json());
-    if (!response.ok) {
-      toast({
-        title: 'Error.',
-        description: 'An error occurred while processing your request',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-      setIsLoading(false);
-      return;
-    }
+    await fetch(process.env.REACT_APP_API_URL + '/api/transaction/all')
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+      })
+      .catch(error => console.log('error', error));
+
+    // if (!response.ok) {
+    //   toast({
+    //     title: 'Error.',
+    //     description: 'An error occurred while processing your request',
+    //     status: 'error',
+    //     duration: 3000,
+    //     isClosable: true,
+    //   });
+    //   setIsLoading(false);
+    //   return;
+    // }
     // if (
     //   response.headers.get('content-type').indexOf('application/json') === -1
     // ) {
