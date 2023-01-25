@@ -1,6 +1,6 @@
 ## Backend
-### API Reference
 
+### API Reference
 
 ### index.js
 
@@ -18,22 +18,23 @@
   POST /api/auth/signup
 ```
 
-| Request Body    | Type                  |
-| :---------------| :-------------------- |
-| `username`      | `String`              |
-| `email`         | `String`              |
-| `password`      | `String`              |
+| Request Body | Type     |
+| :----------- | :------- |
+| `username`   | `String` |
+| `email`      | `String` |
+| `password`   | `String` |
 
 ```
   POST /api/auth/signin
 ```
 
-| Request Body    | Type                  |
-| :---------------| :-------------------- |
-| `username`      | `String`              |
-| `password`      | `String`              |
+| Request Body | Type     |
+| :----------- | :------- |
+| `username`   | `String` |
+| `password`   | `String` |
 
 **Response:**
+
 ```
 {
   id: user._id,
@@ -44,19 +45,21 @@
 ```
 
 ### account.js
+
 ```http
   POST /api/account
 ```
 
 - Must login for creating your bank account along with wallet address
- by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
+  by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
 
-| Request Body    | Type                  |
-| :---------------| :-------------------- |
-| `email`         | `String`              |
-| `currency`      | `String`              |
+| Request Body | Type     |
+| :----------- | :------- |
+| `email`      | `String` |
+| `currency`   | `String` |
 
 **Response:**
+
 ```
 {
   accountNumber: "string",
@@ -73,13 +76,14 @@
 ```
 
 - Must login for viewing your bank account details
- by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
+  by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
 
-| Parameter             | Type     | Description         |
-| :--------             | :------- | :--------------     |
-| `accountNumber`       | `string` | Bank account number |
+| Parameter       | Type     | Description         |
+| :-------------- | :------- | :------------------ |
+| `accountNumber` | `string` | Bank account number |
 
 **Response:**
+
 ```
 {
   accountNumber: "string",
@@ -96,13 +100,14 @@
 ```
 
 - Must login for viewing transactions that your bank account has made
- by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
+  by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
 
-| Parameter             | Type     | Description         |
-| :--------             | :------- | :--------------     |
-| `accountNumber`       | `string` | Bank account number |
+| Parameter       | Type     | Description         |
+| :-------------- | :------- | :------------------ |
+| `accountNumber` | `string` | Bank account number |
 
 **Response:**
+
 ```
 [{
       accountFrom: "AccountId",
@@ -111,7 +116,10 @@
       timestamp: "string",
       meta: {
         currency: "string",
-        transactionHash: "string",
+        txnHash1: "string",
+        txnHash2: "string",
+        fxRate1: "string",
+        fxRate2: "string"
       },
 }]
 ```
@@ -121,23 +129,43 @@
 ```
 
 - Must login for transferring money
- by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
+  by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
 
-| Request Body        | Type     | Description        |
-| :--------           | :------- | :----------------- |
-| `accountFrom`       | `string` | sender's account   |
-| `accountTo`         | `string` | receiver's account |
-| `amountToTransfer`  | `int`    | value to transfer  |
+| Request Body       | Type     | Description        |
+| :----------------- | :------- | :----------------- |
+| `accountFrom`      | `string` | sender's account   |
+| `accountTo`        | `string` | receiver's account |
+| `amountToTransfer` | `int`    | value to transfer  |
+
+**Response:**
+
+```
+{
+      accountFrom: "AccountId",
+      accountTo: "AccountId",
+      transactionAmount: number,
+      timestamp: "string",
+      meta: {
+        currency: "string",
+        txnHash1: "string",
+        txnHash2: "string",
+        fxRate1: "string",
+        fxRate2: "string"
+      },
+}
+```
 
 ### customer.js
+
 ```http
   GET /api/customer
 ```
 
 - Must login to view a customer details
- by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
+  by adding a header called "x-access-token" with value = accessToken that is given to you when sign in
 
 **Response:**
+
 ```
 {
   _id: string,
@@ -157,12 +185,14 @@
 }
 ```
 
-
 ### transaction.js
+
 ```http
   GET /api/transaction/all
 ```
+
 **Response:**
+
 ```
 [{
       accountFrom: "AccountId",
@@ -171,7 +201,10 @@
       timestamp: "string",
       meta: {
         currency: "string",
-        transactionHash: "string",
+        txnHash1: "string",
+        txnHash2: "string",
+        fxRate1: "string",
+        fxRate2: "string"
       },
 }]
 ```
@@ -180,11 +213,12 @@
   GET /api/transaction/:transactionHash
 ```
 
-| Parameter               | Type     | Description      |
-| :--------               | :------- | :--------------  |
-| `transactionHash`       | `string` | Transaction Hash |
+| Parameter         | Type     | Description      |
+| :---------------- | :------- | :--------------- |
+| `transactionHash` | `string` | Transaction Hash |
 
 **Response:**
+
 ```
 {
       accountFrom: "AccountId",
@@ -193,7 +227,10 @@
       timestamp: "string",
       meta: {
         currency: "string",
-        transactionHash: "string",
+        txnHash1: "string",
+        txnHash2: "string",
+        fxRate1: "string",
+        fxRate2: "string"
       },
 }
 ```
