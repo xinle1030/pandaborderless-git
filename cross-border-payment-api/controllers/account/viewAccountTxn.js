@@ -1,7 +1,6 @@
 const Transaction = require("../../models/TransactionHistory");
 const Account = require("../../models/Account");
-const mongooseUtil = require("mongoose");
-const ObjectId = mongooseUtil.Types.ObjectId;
+const { ObjectId } = require("mongodb");
 
 module.exports = async (req, res) => {
   console.log("Get transaction by Account");
