@@ -50,7 +50,10 @@ const createTxnHistory = async (
   sender,
   receiver,
   amountToTransfer,
-  hash1, hash2
+  hash1,
+  hash2,
+  exchangeRate,
+  exchangeBackRate
 ) => {
   // create transaction history
   const transactionData = {
@@ -61,13 +64,16 @@ const createTxnHistory = async (
     meta: {
       currency: sender.currency,
       txnHash1: hash1,
-      txnHash2: hash2
+      txnHash2: hash2,
+      fxRate1: exchangeRate,
+      fxRate2: exchangeBackRate,
     },
   };
 
   try {
-    await Transaction.create(transactionData);
+    let transactionHistory = await Transaction.create(transactionData);
     console.log("Transaction history created");
+    return transactionHistory;
   } catch (error) {
     // Handle error
     throw error;
@@ -85,6 +91,7 @@ const makeTransaction = async (
 
   // create transfer data
   const amount = web3.utils.toBN(amountToTransfer);
+
   const data = lms.methods.transfer(receiverAddr, amount).encodeABI();
 
   // perform transaction

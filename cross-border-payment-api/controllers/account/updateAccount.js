@@ -23,19 +23,18 @@ module.exports = async (req, res, lms, web3) => {
   const fromCurrency = sender.currency;
   const toCurrency = receiver.currency;
 
-  let convertAmount = await fxUtils.fxConvert(
+  let fxRes1 = await fxUtils.fxConvert(
     fromCurrency,
     PEG_CURRENCY,
     amountToTransfer
   );
-  let convertAmountInPDC = await fxUtils.SGDtoPDC(convertAmount);
 
-  let receivedAmountInSGD = await fxUtils.PDCtoSGD(convertAmountInPDC);
-  let receivedAmount = await fxUtils.fxConvert(
-    PEG_CURRENCY,
-    toCurrency,
-    receivedAmountInSGD
-  );
+  let convertAmount = fxRes1.convertedAmount;
+  let exchangeRate = fxRes1.exchangeRate;
+
+  console.log(convertAmount);
+  console.log(exchangeRate);
+  let convertAmountInPDC = await fxUtils.SGDtoPDC(convertAmount);
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -63,30 +62,34 @@ module.exports = async (req, res, lms, web3) => {
     console.log(hash2);
 
     if (hash1 && hash2) {
+      let receivedAmountInSGD = await fxUtils.PDCtoSGD(convertAmountInPDC);
+
+      let fxRes2 = await fxUtils.fxConvert(
+        PEG_CURRENCY,
+        toCurrency,
+        receivedAmountInSGD
+      );
+
+      let receivedAmount = fxRes2.convertedAmount;
+      let exchangeBackRate = fxRes2.exchangeRate;
+
       try {
         await accUtils.deductBalance(accountFrom, amountToTransfer);
         await accUtils.increaseBalance(accountTo, receivedAmount);
-        await txnUtils.createTxnHistory(
+        let transactionHistory = await txnUtils.createTxnHistory(
           sender,
           receiver,
           amountToTransfer,
           hash1,
-          hash2
+          hash2,
+          exchangeRate,
+          exchangeBackRate
         );
 
         await session.commitTransaction();
         session.endSession();
-
-        // Expected response: transaction history object
-        // res.send("Transaction hash completed with: " + hash1 + ", " + hash2 + " from " + accountFrom + " to " + accountTo);
-        res.json({
-          transactionHash: {
-            hash1: hash1,
-            hash2: hash2,
-          },
-          from: accountFrom,
-          to: accountTo,
-        });
+        res.json(transactionHistory);
+        
       } catch (err) {
         await session.abortTransaction();
         session.endSession();
