@@ -1,5 +1,7 @@
+const { ObjectID } = require("bson");
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
+const Account = require("../models/Account");
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -17,7 +19,35 @@ verifyToken = (req, res, next) => {
   });
 };
 
+verifyAcc = async (req, res, next) => {
+  let { accountFrom, accountTo, amountToTransfer } = req.body;
+  let loggedUserId = req.userId;
+
+  await Account.findOne({
+    $and: [
+      { accountNumber: accountFrom },
+      { ownerId: new ObjectID(loggedUserId) },
+    ],
+  }).exec(async (err, account) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+
+    if (account) {
+      console.log(account);
+      next();
+    } else {
+      res
+        .status(400)
+        .send({ message: "Failed! No account access for transfer!" });
+      return;
+    }
+  });
+};
+
 const authJwt = {
   verifyToken,
+  verifyAcc,
 };
 module.exports = authJwt;
