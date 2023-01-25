@@ -1,4 +1,4 @@
-const { authJwt, verifySignUp } = require("../middlewares");
+const { authJwt } = require("../middlewares");
 const createAccount = require("../controllers/account/createAccount");
 const viewAccount = require("../controllers/account/viewAccount");
 const updateAccount = require("../controllers/account/updateAccount");
@@ -17,7 +17,7 @@ module.exports = function (app, lms, web3) {
 
   app.post(
     BASE_URL + "/",
-    [authJwt.verifyToken, verifySignUp.checkDuplicateAccEmail],
+    [authJwt.verifyToken],
     createAccount
   );
 
