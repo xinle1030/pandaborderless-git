@@ -49,6 +49,10 @@ const VerificationForm = () => {
     setData({ ...data, [id]: value });
   };
 
+  const onHandleSenderAccountNumber = e => {
+    setData({ ...data, ['senderAccountNumber']: e.target.value });
+  };
+
   return (
     <>
       {Object.entries(userData).length !== 0 ? (
@@ -56,7 +60,11 @@ const VerificationForm = () => {
           <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="4">
             Step 1: Select your account
           </Heading>
-          <Select id="sendingAccountNumber" onChange={onHandle} size="lg">
+          <Select
+            id="senderAccountNumber"
+            onChange={onHandleSenderAccountNumber}
+            size="lg"
+          >
             {Object.entries(userData).length === 0 ? (
               <option value="0">No account found</option>
             ) : (
@@ -152,18 +160,15 @@ const VerificationForm = () => {
 };
 
 const CurrencyExchange = () => {
-  const [amount, setAmount] = useState(1000);
+  const [amount, setAmount] = useState(100);
   const [convertedAmount, setConvertedAmount] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0.786);
   const { data, setData } = useContext(DataContext);
 
   useEffect(() => {
     setConvertedAmount(amount * exchangeRate);
-    setData({ ...data, ['sendAmount']: '1000' });
+    setData({ ...data, ['sendAmount']: '100' });
   }, [amount, exchangeRate]);
-
-  // const handleChange = event => {
-  // };
 
   const onHandle = e => {
     const { id, value } = e.target;
@@ -239,8 +244,8 @@ const RecipientInfo = () => {
 
           <FormLabel htmlFor="accountNumber">Account Number</FormLabel>
           <Input
-            id="rAccountNumber"
-            value={data.rAccountNumber}
+            id="recipientAccountNumber"
+            value={data.recipientAccountNumber}
             onChange={onHandle}
           />
         </FormControl>
@@ -489,16 +494,21 @@ export default function TransactionPage() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-
     try {
-      console.log(parseInt(data.sendAmount));
+      console.log(
+        data.senderAccountNumber,
+        data.recipientAccountNumber,
+        100 * parseInt(data.sendAmount)
+      );
+
+      const putData = {
+        accountFrom: data.senderAccountNumber,
+        accountTo: data.recipientAccountNumber,
+        amountToTransfer: 100 * parseInt(data.sendAmount),
+      };
       const response = await axios.put(
-        process.env.REACT_APP_API_URL_STAG + `/api/account/transfer`,
-        {
-          accountFrom: '2747',
-          accountTo: '6844',
-          amountToTransfer: parseInt(data.sendAmount),
-        },
+        process.env.REACT_APP_API_URL + `/api/account/transfer`,
+        putData,
         {
           headers: {
             'x-access-token': accessToken,
@@ -519,6 +529,10 @@ export default function TransactionPage() {
         throw new Error(response);
       }
     } catch (error) {
+      if (error.response.status === 504) {
+        console.log('504 Gateway');
+      }
+
       console.error(error);
       toast({
         title: 'Error.',
