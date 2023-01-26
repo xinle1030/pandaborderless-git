@@ -41,7 +41,7 @@ function CurrencyConverter() {
 
   useEffect(() => {
     async function getRate() {
-      const rate = await fxRate('SGD', 'USD');
+      const rate = await fxRate('SGD', 'MYR');
       setExchangeRate(rate);
       setConvertedAmount(amount * exchangeRate);
     }
@@ -85,6 +85,7 @@ function CurrencyConverter() {
           value={amount}
         />
         <Select defaultValue={'SGD'} size="lg" ml={'2'} w={'50%'}>
+          <option value="MYR">MYR 🇲🇾</option>
           <option value="USD">USD 🇺🇸</option>
           <option value="SGD">SGD 🇸🇬</option>
           <option value="KHR">KHR 🇰🇭</option>
@@ -100,7 +101,8 @@ function CurrencyConverter() {
           children="$"
         />
         <Input placeholder="Recipient gets" size="lg" value={convertedAmount} />
-        <Select defaultValue={'USD'} size="lg" ml={'2'} w={'50%'}>
+        <Select defaultValue={'MYR'} size="lg" ml={'2'} w={'50%'}>
+          <option value="MYR">MYR 🇲🇾</option>
           <option value="USD">USD 🇺🇸</option>
           <option value="SGD">SGD 🇸🇬</option>
           <option value="KHR">KHR 🇰🇭</option>
@@ -108,7 +110,7 @@ function CurrencyConverter() {
       </InputGroup>
 
       <Badge variant="subtle" colorScheme="gray" width={'fit-content'} mb={'2'}>
-        Rate: 1 SGD = {exchangeRate} USD
+        Rate: 1 SGD = {exchangeRate} MYR
       </Badge>
 
       <Button
@@ -155,7 +157,7 @@ function CurrencyConverterClean() {
 
   useEffect(() => {
     async function getRate() {
-      const rate = await fxRate('SGD', 'USD');
+      const rate = await fxRate('SGD', 'MYR');
       setExchangeRate(rate);
       setConvertedAmount(amount * exchangeRate);
     }
@@ -189,8 +191,9 @@ function CurrencyConverterClean() {
           value={amount}
         />
         <Select defaultValue={'SGD'} size="lg" ml={'2'} w={'50%'}>
-          <option value="USD">USD 🇺🇸</option>
           <option value="SGD">SGD 🇸🇬</option>
+          <option value="USD">USD 🇺🇸</option>
+          <option value="MYR">MYR 🇲🇾</option>
           <option value="KHR">KHR 🇰🇭</option>
         </Select>
       </InputGroup>
@@ -204,7 +207,8 @@ function CurrencyConverterClean() {
           children="$"
         />
         <Input placeholder="Recipient gets" size="lg" value={convertedAmount} />
-        <Select defaultValue={'USD'} size="lg" ml={'2'} w={'50%'}>
+        <Select defaultValue={'MYR'} size="lg" ml={'2'} w={'50%'}>
+          <option value="MYR">MYR 🇲🇾</option>
           <option value="USD">USD 🇺🇸</option>
           <option value="SGD">SGD 🇸🇬</option>
           <option value="KHR">KHR 🇰🇭</option>
@@ -212,7 +216,7 @@ function CurrencyConverterClean() {
       </InputGroup>
 
       <Badge variant="subtle" colorScheme="gray" width={'fit-content'} mb={'2'}>
-        Rate: 1 SGD = {exchangeRate} USD
+        Rate: 1 SGD = {exchangeRate} MYR
       </Badge>
     </>
   );

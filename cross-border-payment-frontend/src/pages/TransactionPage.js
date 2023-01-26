@@ -162,7 +162,7 @@ const VerificationForm = () => {
 const CurrencyExchange = () => {
   const [amount, setAmount] = useState(100);
   const [convertedAmount, setConvertedAmount] = useState(0);
-  const [exchangeRate, setExchangeRate] = useState(0.786);
+  const [exchangeRate, setExchangeRate] = useState(3.23);
   const { data, setData } = useContext(DataContext);
 
   useEffect(() => {
@@ -213,7 +213,8 @@ const CurrencyExchange = () => {
           children="$"
         />
         <Input placeholder="Recipient gets" size="lg" value={convertedAmount} />
-        <Select defaultValue={'USD'} size="lg" ml={'2'} w={'50%'}>
+        <Select defaultValue={'MYR'} size="lg" ml={'2'} w={'50%'}>
+          <option value="MYR">MYR 🇲🇾</option>
           <option value="USD">USD 🇺🇸</option>
           <option value="SGD">SGD 🇸🇬</option>
           <option value="KHR">KHR 🇰🇭</option>
@@ -221,7 +222,7 @@ const CurrencyExchange = () => {
       </InputGroup>
 
       <Badge variant="subtle" colorScheme="gray" width={'fit-content'} mb={'2'}>
-        Rate: 1 SGD = 0.786 USD
+        Rate: 1 SGD = 3.23 MYR
       </Badge>
     </>
   );
@@ -328,14 +329,14 @@ const Summary = () => {
                   width={'fit-content'}
                   mb={'2'}
                 >
-                  Rate: 1 SGD = 0.786 USD
+                  Rate: 1 SGD = 3.23 MYR
                 </Badge>
                 <SimpleGrid columns={{ base: 2 }}>
                   <Text fontSize={'xl'} fontWeight="bold">
                     SGD 🇸🇬
                   </Text>
                   <Text fontSize={'xl'} textAlign="end" f fontWeight="bold">
-                    1,000
+                    100
                   </Text>
                   <ArrowDownIcon
                     fontSize={'xl'}
@@ -345,10 +346,10 @@ const Summary = () => {
                   />
                   <Text />
                   <Text fontSize={'xl'} fontWeight="bold">
-                    USD 🇺🇸
+                    MYR 🇲🇾
                   </Text>
                   <Text fontSize={'xl'} textAlign="end" fontWeight="bold">
-                    786
+                    323
                   </Text>
                 </SimpleGrid>
               </Box>
@@ -529,10 +530,6 @@ export default function TransactionPage() {
         throw new Error(response);
       }
     } catch (error) {
-      if (error.response.status === 504) {
-        console.log('504 Gateway');
-      }
-
       console.error(error);
       toast({
         title: 'Error.',
