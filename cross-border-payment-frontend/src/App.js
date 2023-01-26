@@ -19,6 +19,9 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import TransactionPage from './pages/TransactionPage';
 import NotFound from './pages/NotFound';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
+import UserPage from './pages/UserPage';
 
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
@@ -65,7 +68,10 @@ function App() {
           <Routes>
             <Route path="*" element={<NotFound />} />
             <Route path="/" element={<LandingPage />} />
+            <Route path="/user" element={<UserPage />} />
             <Route path="/transaction" element={<TransactionPage />} />
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
           </Routes>
           <Footer />
         </Router>
