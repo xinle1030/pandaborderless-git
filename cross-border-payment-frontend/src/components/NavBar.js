@@ -14,6 +14,12 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Menu,
+  MenuButton,
+  Avatar,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from '@chakra-ui/react';
 import {
   HamburgerIcon,
@@ -21,9 +27,9 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons';
-import Wallet from './Wallet';
 import { ReactComponent as PandaIcon } from '../assets/logo.svg';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const GlobeIcon = props => (
   <Icon viewBox="0 0 420 420" {...props}>
@@ -45,6 +51,15 @@ const GlobeIcon = props => (
 
 export function NavBar() {
   const { isOpen, onToggle } = useDisclosure();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      setIsLoggedIn(true);
+    }
+  }, [location]);
 
   return (
     <Box
@@ -94,19 +109,78 @@ export function NavBar() {
           flex={{ base: 1, md: 0 }}
           justify={'flex-end'}
           direction={'row'}
-          spacing={6}
+          spacing={4}
         >
-          <IconButton icon={<GlobeIcon />} variant={'ghost'} fontSize="xl" />
-          <Button
-            as={'a'}
-            fontSize={'sm'}
-            fontWeight={400}
-            variant={'link'}
-            href={'#'}
-          >
-            Sign In
-          </Button>
-          <Wallet />
+          <Menu>
+            <MenuButton
+              as={Button}
+              rounded={'full'}
+              variant={'link'}
+              cursor={'pointer'}
+              minW={0}
+            >
+              <IconButton
+                icon={<GlobeIcon />}
+                variant={'ghost'}
+                fontSize="xl"
+              />
+            </MenuButton>
+            <MenuList>
+              <MenuItem>ENG 🇬🇧</MenuItem>
+              <MenuItem>中文 🇨🇳</MenuItem>
+              <MenuItem>ខ្មែរ 🇰🇭</MenuItem>
+            </MenuList>
+          </Menu>
+          {isLoggedIn ? (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={'full'}
+                variant={'link'}
+                cursor={'pointer'}
+                minW={0}
+              >
+                <Avatar size={'sm'} />
+              </MenuButton>
+              <MenuList>
+                <MenuItem as={RouterLink} to="/user">
+                  User Details
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem
+                  onClick={() => {
+                    localStorage.removeItem('accessToken');
+                    setIsLoggedIn(false);
+                    window.location.href = '/';
+                  }}
+                >
+                  Sign Out
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <>
+              <Button
+                fontSize={'sm'}
+                fontWeight={400}
+                as={RouterLink}
+                to={'/signup'}
+                me={0}
+              >
+                Sign Up
+              </Button>
+              <Button
+                fontSize={'sm'}
+                fontWeight={400}
+                as={RouterLink}
+                to={'/signin'}
+              >
+                Sign In
+              </Button>
+            </>
+          )}
+
+          {/* <Wallet /> */}
         </Stack>
       </Flex>
 
@@ -223,15 +297,13 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
 
   return (
     <Stack spacing={4} onClick={children && onToggle}>
-      <Flex
+      <Link
         py={2}
-        as={Link}
-        href={href ?? '#'}
-        justify={'space-between'}
-        align={'center'}
-        _hover={{
-          textDecoration: 'none',
-        }}
+        as={RouterLink}
+        to={href}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        _hover={{ textDecoration: 'none' }}
       >
         <Text
           fontWeight={600}
@@ -248,7 +320,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
             h={6}
           />
         )}
-      </Flex>
+      </Link>
 
       <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
         <Stack
@@ -280,15 +352,7 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: 'Transaction',
+    label: 'Send Money',
     href: '/transaction',
-  },
-  {
-    label: 'Link 2',
-    href: '#',
-  },
-  {
-    label: 'Link 3',
-    href: '#',
   },
 ];

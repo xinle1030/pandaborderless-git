@@ -16,7 +16,6 @@ import {
   FormHelperText,
   InputLeftElement,
   Badge,
-  List,
   useColorModeValue,
   StackDivider,
   Stack,
@@ -28,14 +27,23 @@ import {
 } from '@chakra-ui/react';
 
 import { useToast } from '@chakra-ui/react';
-import { ArrowDownIcon, CheckCircleIcon, InfoIcon } from '@chakra-ui/icons';
+import {
+  ArrowDownIcon,
+  CheckCircleIcon,
+  ExternalLinkIcon,
+  InfoIcon,
+} from '@chakra-ui/icons';
 import Confetti from '../components/Confetti';
 import { Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
 
 const DataContext = createContext({});
+const UserDataContext = createContext({});
 
 const VerificationForm = () => {
   const { data, setData } = useContext(DataContext);
+  const { userData, setUserData } = useContext(UserDataContext);
+
   const onHandle = e => {
     const { id, value } = e.target;
     setData({ ...data, [id]: value });
@@ -43,78 +51,102 @@ const VerificationForm = () => {
 
   return (
     <>
-      <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="4">
-        Step 1: User Verification
-      </Heading>
-      <FormControl mr="5%">
-        <FormLabel htmlFor="firstName" fontWeight={'normal'}>
-          First name
-        </FormLabel>
-        <Input
-          id="sFirstName"
-          placeholder="First name"
-          type="text"
-          value={data.sFirstName}
-          onChange={onHandle}
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel htmlFor="lastName" fontWeight={'normal'}>
-          Last name
-        </FormLabel>
-        <Input
-          id="sLastName"
-          placeholder="Last name"
-          value={data.sLastName}
-          onChange={onHandle}
-        />
-      </FormControl>
-      <Flex mt="2%">
-        <FormControl mr="5%">
-          <FormLabel htmlFor="occupation" fontWeight={'normal'}>
-            Occupation
-          </FormLabel>
-          <Input
-            id="sOccupation"
-            placeholder="Occupation"
-            value={data.sOccupation}
-            onChange={onHandle}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="sourceOfFunds" fontWeight={'normal'}>
-            Source of funds
-          </FormLabel>
-          <Input
-            id="sSourceOfFunds"
-            placeholder="Source of funds"
-            value={data.sSourceOfFunds}
-            onChange={onHandle}
-          />
-        </FormControl>
-      </Flex>
-      <FormControl mt="2%">
-        <FormLabel htmlFor="purposeOfTransfer" fontWeight={'normal'}>
-          Purpose of transfer
-        </FormLabel>
-        <Input
-          id="sPurposeOfTransfer"
-          value={data.sPurposeOfTransfer}
-          onChange={onHandle}
-        />
-      </FormControl>
-      <FormControl mt="2%">
-        <FormLabel id="email" htmlFor="email" fontWeight={'normal'}>
-          Email address
-        </FormLabel>
-        <Input
-          id="sEmail"
-          type="email"
-          value={data.sEmail}
-          onChange={onHandle}
-        />
-        <FormHelperText>We'll never share your email.</FormHelperText>
-      </FormControl>
+      {Object.entries(userData).length !== 0 ? (
+        <>
+          <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="4">
+            Step 1: Select your account
+          </Heading>
+          <Select id="sendingAccountNumber" onChange={onHandle} size="lg">
+            {Object.entries(userData).length === 0 ? (
+              <option value="0">No account found</option>
+            ) : (
+              userData.accounts.map((account, index) => (
+                <option key={index} value={account.accountNumber}>
+                  {account.accountNumber} {account.walletAdrHash.substr(0, 6)}
+                  ...
+                  {account.walletAdrHash.substr(-6)}
+                </option>
+              ))
+            )}
+          </Select>
+        </>
+      ) : (
+        <>
+          {' '}
+          <Heading w="100%" textAlign={'center'} fontWeight="bold" mb="4">
+            Step 1: User Verification
+          </Heading>
+          <FormControl mr="5%">
+            <FormLabel htmlFor="firstName" fontWeight={'normal'}>
+              First name
+            </FormLabel>
+            <Input
+              id="sFirstName"
+              placeholder="First name"
+              type="text"
+              value={data.sFirstName}
+              onChange={onHandle}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="lastName" fontWeight={'normal'}>
+              Last name
+            </FormLabel>
+            <Input
+              id="sLastName"
+              placeholder="Last name"
+              value={data.sLastName}
+              onChange={onHandle}
+            />
+          </FormControl>
+          <Flex mt="2%">
+            <FormControl mr="5%">
+              <FormLabel htmlFor="occupation" fontWeight={'normal'}>
+                Occupation
+              </FormLabel>
+              <Input
+                id="sOccupation"
+                placeholder="Occupation"
+                value={data.sOccupation}
+                onChange={onHandle}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="sourceOfFunds" fontWeight={'normal'}>
+                Source of funds
+              </FormLabel>
+              <Input
+                id="sSourceOfFunds"
+                placeholder="Source of funds"
+                value={data.sSourceOfFunds}
+                onChange={onHandle}
+              />
+            </FormControl>
+          </Flex>
+          <FormControl mt="2%">
+            <FormLabel htmlFor="purposeOfTransfer" fontWeight={'normal'}>
+              Purpose of transfer
+            </FormLabel>
+            <Input
+              id="sPurposeOfTransfer"
+              value={data.sPurposeOfTransfer}
+              onChange={onHandle}
+            />
+          </FormControl>
+          <FormControl mt="2%">
+            <FormLabel id="email" htmlFor="email" fontWeight={'normal'}>
+              Email address
+            </FormLabel>
+            <Input
+              id="sEmail"
+              type="email"
+              value={data.sEmail}
+              onChange={onHandle}
+            />
+            <FormHelperText>We'll never share your email.</FormHelperText>
+          </FormControl>
+        </>
+      )}
     </>
   );
 };
@@ -123,13 +155,20 @@ const CurrencyExchange = () => {
   const [amount, setAmount] = useState(1000);
   const [convertedAmount, setConvertedAmount] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0.786);
+  const { data, setData } = useContext(DataContext);
 
   useEffect(() => {
     setConvertedAmount(amount * exchangeRate);
+    setData({ ...data, ['sendAmount']: '1000' });
   }, [amount, exchangeRate]);
 
-  const handleChange = event => {
-    setAmount(event.target.value);
+  // const handleChange = event => {
+  // };
+
+  const onHandle = e => {
+    const { id, value } = e.target;
+    setAmount(e.target.value);
+    setData({ ...data, [id]: value });
   };
 
   return (
@@ -149,7 +188,8 @@ const CurrencyExchange = () => {
         <Input
           placeholder="You send"
           size="lg"
-          onChange={handleChange}
+          id="sendAmount"
+          onChange={onHandle}
           value={amount}
         />
         <Select defaultValue={'SGD'} size="lg" ml={'2'} w={'50%'}>
@@ -196,24 +236,11 @@ const RecipientInfo = () => {
       <SimpleGrid columns={1} spacing={6}>
         <FormControl mt="2%">
           <Heading size="md"> Recipient Account Info </Heading>
-          <FormLabel htmlFor="accountType">Account Type</FormLabel>
-          <Input
-            id="rAccountType"
-            value={data.rAccountType}
-            onChange={onHandle}
-          />
+
           <FormLabel htmlFor="accountNumber">Account Number</FormLabel>
           <Input
             id="rAccountNumber"
             value={data.rAccountNumber}
-            onChange={onHandle}
-          />
-          <FormLabel htmlFor="routingNumber">
-            Electronic (ACH) Routing Number
-          </FormLabel>
-          <Input
-            id="rRoutingNumber"
-            value={data.rRoutingNumber}
             onChange={onHandle}
           />
         </FormControl>
@@ -331,17 +358,9 @@ const Summary = () => {
                   Recipient Information
                 </Text>
                 <Grid gap={2} templateColumns="repeat(2, 1fr)">
-                  <GridItem>
-                    <Text fontSize={'sm'}>Account Type</Text>
-                    <Text fontWeight="bold">{data.rAccountType}</Text>
-                  </GridItem>
-                  <GridItem>
+                  <GridItem colSpan={2} mb={2}>
                     <Text fontSize={'sm'}>Account Number</Text>
                     <Text fontWeight="bold">{data.rAccountNumber}</Text>
-                  </GridItem>
-                  <GridItem colSpan={2}>
-                    <Text fontSize={'sm'}>Electronic (ACH) Routing Number</Text>
-                    <Text fontWeight="bold">{data.rRoutingNumber}</Text>
                   </GridItem>
                   <GridItem>
                     <Text fontSize={'sm'}>First name</Text>
@@ -351,7 +370,7 @@ const Summary = () => {
                     <Text fontSize={'sm'}>Last name</Text>
                     <Text fontWeight="bold">{data.rLastName}</Text>
                   </GridItem>
-                  <GridItem colSpan={2}>
+                  <GridItem colSpan={2} mb={2}>
                     <Text fontSize={'sm'}>Mobile Number</Text>
                     <Text fontWeight="bold">{data.rMobileNumber}</Text>
                   </GridItem>
@@ -368,7 +387,6 @@ const Summary = () => {
                     <Text fontWeight="bold">{data.rCity}</Text>
                   </GridItem>
                 </Grid>
-                <List spacing={2}></List>
               </Box>
               <FormControl>
                 <Text
@@ -407,6 +425,7 @@ const Summary = () => {
 };
 
 const TransactionCompleted = () => {
+  const { data, setData } = useContext(DataContext);
   return (
     <Container display="flex" maxW={'7xl'} flexDirection={'column'}>
       <Confetti />
@@ -415,7 +434,21 @@ const TransactionCompleted = () => {
         <Heading as="h2" size="lg" mt={6} mb={2}>
           Transaction successfully completed.
         </Heading>
-        {/* TODO: add txn hash and id here */}
+        Check your transaction here:
+        <Text></Text>
+        <Text textAlign={'text-top'}>
+          <Link
+            textDecoration={'underline'}
+            color={'teal.500'}
+            href={`https://goerli.etherscan.io/tx/${data.meta.txnHash1}`}
+            target="_blank"
+            isExternal
+            rel="noopener noreferrer"
+          >
+            {data.meta.txnHash1}
+            <ExternalLinkIcon verticalAlign={'text-top'} ms={1} />
+          </Link>
+        </Text>
       </Box>
       <Link mx="auto" textAlign={'center'} w="auto" as={RouterLink} to="/">
         Back to home
@@ -429,73 +462,68 @@ export default function TransactionPage() {
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(25);
   const [data, setData] = useState({});
+  const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const accessToken = localStorage.getItem('accessToken');
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        process.env.REACT_APP_API_URL + '/api/customer',
+        {
+          headers: {
+            'x-access-token': accessToken,
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        console.error(data);
+      } else {
+        console.log(data);
+        setUserData(data);
+      }
+    }
+    fetchData();
+  }, []);
+
   const handleSubmit = async () => {
     setIsLoading(true);
-    // const response = await fetch(
-    //   process.env.REACT_APP_API_URL + '/api/account/transfer',
-    //   {
-    //     method: 'PUT',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     // TODO: remove hardcode
-    //     body: JSON.stringify({
-    //       accountFrom: '4510',
-    //       accountTo: '4510',
-    //       amountToTransfer: 1,
-    //     }),
-    //   }
-    // );
 
-    let response;
-
-    await fetch(process.env.REACT_APP_API_URL + '/api/transaction/all')
-      .then(retResponse => response = retResponse.json())
-      .then(result => {
-        console.log(result);
-      })
-      .catch(error => console.log('error', error));
-
-    // if (!response.ok) {
-    //   toast({
-    //     title: 'Error.',
-    //     description: 'An error occurred while processing your request',
-    //     status: 'error',
-    //     duration: 3000,
-    //     isClosable: true,
-    //   });
-    //   setIsLoading(false);
-    //   return;
-    // }
-    // if (
-    //   response.headers.get('content-type').indexOf('application/json') === -1
-    // ) {
-    //   toast({
-    //     title: 'Error.',
-    //     description: 'An error occurred while processing your request',
-    //     status: 'error',
-    //     duration: 3000,
-    //     isClosable: true,
-    //   });
-    //   console.log(response.json());
-    //   setIsLoading(false);
-    //   return;
-    // }
-    const json = await response;
-    if (response.ok) {
-      toast({
-        title: 'Success.',
-        description: 'Transaction completed successfully.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-      setStep(5);
-    } else {
+    try {
+      console.log(parseInt(data.sendAmount));
+      const response = await axios.put(
+        process.env.REACT_APP_API_URL_STAG + `/api/account/transfer`,
+        {
+          accountFrom: '2747',
+          accountTo: '6844',
+          amountToTransfer: parseInt(data.sendAmount),
+        },
+        {
+          headers: {
+            'x-access-token': accessToken,
+          },
+        }
+      );
+      if (response.status === 200) {
+        toast({
+          title: 'Success.',
+          description: 'Transaction completed successfully.',
+          status: 'success',
+          isClosable: true,
+        });
+        console.log(response);
+        setData(response.data);
+        setStep(5);
+      } else {
+        throw new Error(response);
+      }
+    } catch (error) {
+      console.error(error);
       toast({
         title: 'Error.',
-        description: json.message,
+        description: `An error occurred while processing your request. ${error.message}`,
         status: 'error',
-        duration: 3000,
         isClosable: true,
       });
     }
@@ -504,83 +532,87 @@ export default function TransactionPage() {
 
   return (
     <DataContext.Provider value={{ data, setData }}>
-      <Box
-        borderWidth="1px"
-        rounded="lg"
-        shadow="1px 1px 3px rgba(0,0,0,0.3)"
-        maxWidth={800}
-        p={6}
-        mx="auto"
-        my="10"
-        as="form"
-      >
-        <Progress
-          hasStripe
-          value={progress}
-          colorScheme="secondary"
-          mb="5%"
-          mx="5%"
-          isAnimated
-          display={step === 5 ? 'none' : 'block'}
-        />
-        {step === 1 ? (
-          <VerificationForm />
-        ) : step === 2 ? (
-          <CurrencyExchange />
-        ) : step === 3 ? (
-          <RecipientInfo />
-        ) : step === 4 ? (
-          <Summary />
-        ) : (
-          <TransactionCompleted />
-        )}
-        <ButtonGroup mt="5%" w="100%">
-          <Flex w="100%" justifyContent="space-between">
-            <Flex>
-              <Button
-                onClick={() => {
-                  setStep(step - 1);
-                  setProgress(progress - 25);
-                }}
-                display={(step === 1) | (step === 5) ? 'none' : 'block'}
-                colorScheme="secondary"
-                variant="outline"
-                w="7rem"
-                mr="5%"
-              >
-                Back
-              </Button>
-              <Button
-                w="7rem"
-                display={(step === 4) | (step === 5) ? 'none' : 'block'}
-                onClick={() => {
-                  setStep(step + 1);
-                  if (step === 4) {
-                    setProgress(100);
-                  } else {
-                    setProgress(progress + 25);
-                  }
-                }}
-                colorScheme="secondary"
-                variant="solid"
-              >
-                Next
-              </Button>
+      <UserDataContext.Provider value={{ userData, setUserData }}>
+        <Box
+          borderWidth="1px"
+          rounded="lg"
+          shadow="1px 1px 3px rgba(0,0,0,0.3)"
+          maxWidth={800}
+          p={6}
+          mx="auto"
+          my="10"
+          as="form"
+        >
+          <Progress
+            hasStripe
+            value={progress}
+            colorScheme="secondary"
+            mb="5%"
+            mx="5%"
+            isAnimated
+            display={step === 5 ? 'none' : 'block'}
+          />
+          {step === 1 ? (
+            userData ? (
+              <VerificationForm />
+            ) : null
+          ) : step === 2 ? (
+            <CurrencyExchange />
+          ) : step === 3 ? (
+            <RecipientInfo />
+          ) : step === 4 ? (
+            <Summary />
+          ) : (
+            <TransactionCompleted />
+          )}
+          <ButtonGroup mt="5%" w="100%">
+            <Flex w="100%" justifyContent="space-between">
+              <Flex>
+                <Button
+                  onClick={() => {
+                    setStep(step - 1);
+                    setProgress(progress - 25);
+                  }}
+                  display={(step === 1) | (step === 5) ? 'none' : 'block'}
+                  colorScheme="secondary"
+                  variant="outline"
+                  w="7rem"
+                  mr="5%"
+                >
+                  Back
+                </Button>
+                <Button
+                  w="7rem"
+                  display={(step === 4) | (step === 5) ? 'none' : 'block'}
+                  onClick={() => {
+                    setStep(step + 1);
+                    if (step === 4) {
+                      setProgress(100);
+                    } else {
+                      setProgress(progress + 25);
+                    }
+                  }}
+                  colorScheme="secondary"
+                  variant="solid"
+                >
+                  Next
+                </Button>
+              </Flex>
+              {step === 4 ? (
+                <Button
+                  w="7rem"
+                  colorScheme="green"
+                  variant="solid"
+                  onClick={handleSubmit}
+                  isLoading={isLoading}
+                >
+                  Submit
+                </Button>
+              ) : null}
             </Flex>
-            {step === 4 ? (
-              <Button
-                w="7rem"
-                colorScheme="green"
-                variant="solid"
-                onClick={handleSubmit}
-                isLoading={isLoading}
-              >
-                Submit
-              </Button>
-            ) : null}
-          </Flex>
-        </ButtonGroup>
-      </Box>
+          </ButtonGroup>
+        </Box>
+      </UserDataContext.Provider>
     </DataContext.Provider>
   );
 }
