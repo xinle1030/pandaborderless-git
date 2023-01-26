@@ -3,6 +3,7 @@ dotenv.config({ path: "./config/.env" });
 
 const fxConvert = async (fromCurrency, toCurrency, amount) => {
   let convertedAmount = amount;
+  let exchangeRate = 1;
 
   if (fromCurrency != toCurrency) {
     var myHeaders = new Headers();
@@ -26,10 +27,11 @@ const fxConvert = async (fromCurrency, toCurrency, amount) => {
         console.log(result);
         convertedAmount =
           Math.round((result.result + Number.EPSILON) * 100) / 100;
+          exchangeRate = result.info.rate;
       })
       .catch((error) => console.log("error", error));
   }
-  return convertedAmount;
+  return {convertedAmount, exchangeRate};
 };
 
 const SGDtoPDC = async (amountInSGD) => {

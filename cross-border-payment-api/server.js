@@ -50,6 +50,7 @@ mongoose
     // routes
     require("./routes/index")(app);
     require("./routes/auth")(app);
+    require("./routes/customer")(app);
     require("./routes/transaction")(app);
     require("./routes/account")(app, lms, web3);
 

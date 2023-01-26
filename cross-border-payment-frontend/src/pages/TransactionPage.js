@@ -489,6 +489,7 @@ export default function TransactionPage() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
+
     try {
       console.log(parseInt(data.sendAmount));
       const response = await axios.put(
