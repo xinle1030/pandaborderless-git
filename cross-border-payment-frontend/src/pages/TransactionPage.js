@@ -162,7 +162,7 @@ const VerificationForm = () => {
 const CurrencyExchange = () => {
   const [amount, setAmount] = useState(100);
   const [convertedAmount, setConvertedAmount] = useState(0);
-  const [exchangeRate, setExchangeRate] = useState(3.23);
+  const [exchangeRate, setExchangeRate] = useState(0.24);
   const { data, setData } = useContext(DataContext);
 
   useEffect(() => {
@@ -197,7 +197,8 @@ const CurrencyExchange = () => {
           onChange={onHandle}
           value={amount}
         />
-        <Select defaultValue={'SGD'} size="lg" ml={'2'} w={'50%'}>
+        <Select defaultValue={'MYR'} size="lg" ml={'2'} w={'50%'}>
+          <option value="MYR">MYR 🇲🇾</option>
           <option value="USD">USD 🇺🇸</option>
           <option value="SGD">SGD 🇸🇬</option>
           <option value="KHR">KHR 🇰🇭</option>
@@ -213,16 +214,16 @@ const CurrencyExchange = () => {
           children="$"
         />
         <Input placeholder="Recipient gets" size="lg" value={convertedAmount} />
-        <Select defaultValue={'MYR'} size="lg" ml={'2'} w={'50%'}>
-          <option value="MYR">MYR 🇲🇾</option>
+        <Select defaultValue={'USD'} size="lg" ml={'2'} w={'50%'}>
           <option value="USD">USD 🇺🇸</option>
+          <option value="MYR">MYR 🇲🇾</option>
           <option value="SGD">SGD 🇸🇬</option>
           <option value="KHR">KHR 🇰🇭</option>
         </Select>
       </InputGroup>
 
       <Badge variant="subtle" colorScheme="gray" width={'fit-content'} mb={'2'}>
-        Rate: 1 SGD = 3.23 MYR
+        Rate: 1 MYR = 0.24 USD
       </Badge>
     </>
   );
@@ -329,11 +330,11 @@ const Summary = () => {
                   width={'fit-content'}
                   mb={'2'}
                 >
-                  Rate: 1 SGD = 3.23 MYR
+                  Rate: 1 MYR = 0.24 USD
                 </Badge>
                 <SimpleGrid columns={{ base: 2 }}>
                   <Text fontSize={'xl'} fontWeight="bold">
-                    SGD 🇸🇬
+                    MYR 🇲🇾
                   </Text>
                   <Text fontSize={'xl'} textAlign="end" f fontWeight="bold">
                     100
@@ -346,10 +347,10 @@ const Summary = () => {
                   />
                   <Text />
                   <Text fontSize={'xl'} fontWeight="bold">
-                    MYR 🇲🇾
+                    USD 🇺🇸
                   </Text>
                   <Text fontSize={'xl'} textAlign="end" fontWeight="bold">
-                    323
+                    24
                   </Text>
                 </SimpleGrid>
               </Box>
@@ -499,13 +500,13 @@ export default function TransactionPage() {
       console.log(
         data.senderAccountNumber,
         data.recipientAccountNumber,
-        100 * parseInt(data.sendAmount)
+        parseInt(data.sendAmount)
       );
 
       const putData = {
         accountFrom: data.senderAccountNumber,
         accountTo: data.recipientAccountNumber,
-        amountToTransfer: 100 * parseInt(data.sendAmount),
+        amountToTransfer: parseInt(data.sendAmount),
       };
       const response = await axios.put(
         process.env.REACT_APP_API_URL + `/api/account/transfer`,
