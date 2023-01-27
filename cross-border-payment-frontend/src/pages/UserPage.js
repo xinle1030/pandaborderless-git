@@ -183,15 +183,23 @@ export default function UserPage() {
               h="100%"
               overflow={'hidden'}
             >
-              {' '}
-              <Text
-                textAlign={'center'}
-                fontWeight="bold"
-                color={'primary.700'}
-                py={2}
-              >
-                TRANSACTIONS (Account)
-              </Text>
+              <Box pt="4">
+                <Text
+                  fontSize={'sm'}
+                  textAlign={'center'}
+                  fontWeight={500}
+                  bg={useColorModeValue('green.50', 'green.900')}
+                  p={2}
+                  px={3}
+                  color={'green.500'}
+                  rounded={'full'}
+                  w="fit-content"
+                  mx="auto"
+                  my="2"
+                >
+                  Transactions (Account)
+                </Text>
+              </Box>
               <Tabs variant="soft-rounded">
                 <TabList ps="4">
                   {accountNumbers.map((accountNumber, index) => (
