@@ -4,7 +4,8 @@ This is a monorepo containing 1 project as follows:
 - backend API
 
 ## Deployment
-- Backend (using): 
+- Backend (using AWS EC2 instance): http://panda-alb-279443553.ap-southeast-1.elb.amazonaws.com/
+- Frontend (using Vercel): https://pandaborderless-git.vercel.app/
 
 ## Backend
 ### Set up hyperledger besu
