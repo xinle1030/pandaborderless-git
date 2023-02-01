@@ -15,10 +15,9 @@ const retrieveDocumentByAccountNumber = async (accountNumber) => {
   }
 };
 
+// get PK and wallet address of from wallet
 const getPDCOwner = async () => {
-  // get PK and wallet address of from wallet
   const owner = await retrieveDocumentByAccountNumber(PANDA_ACC);
-  
   return owner;
 };
 
@@ -39,6 +38,7 @@ const deductBalance = async (accountNumber, value) => {
 // increase account balance
 const increaseBalance = async (accountNumber, value) => {
   try {
+    // round value to 2dc
     value = Number(value);
     if (isNaN(value)) throw new Error("Invalid value, it must be a number");
     value = Math.round(value * 100) / 100;

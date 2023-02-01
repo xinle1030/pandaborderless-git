@@ -2,7 +2,19 @@ const Transaction = require("../models/TransactionHistory");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config/.env" });
 
-// Create send function
+/**
+ * Sends a transaction from the `sender` account to the `receiver` account.
+ *
+ * @param {Object} sender - The sender account object.
+ * @param {string} sender.walletAdrHash - The sender's wallet address hash.
+ * @param {string} sender.walletPKHash - The sender's wallet private key hash.
+ * @param {Object} receiver - The receiver account object.
+ * @param {string} receiver.walletAdrHash - The receiver's wallet address hash.
+ * @param {string} txnData - The transaction data to be sent.
+ * @param {Object} web3 - The web3 instance.
+ *
+ * @return {string} - The transaction hash.
+ */
 const send = async (sender, receiver, txnData, web3) => {
   let addressFrom = sender.walletAdrHash;
   let addressFromPK = sender.walletPKHash;
@@ -43,9 +55,23 @@ const send = async (sender, receiver, txnData, web3) => {
     console.error(error);
   }
 
+  // return the transaction hash
   return createReceipt.transactionHash;
 };
 
+/**
+ * Creates a transaction history in the database.
+ *
+ * @param {Object} sender - The sender account object.
+ * @param {Object} receiver - The receiver account object.
+ * @param {number} amountToTransfer - The amount to be transferred.
+ * @param {string} hash1 - The transaction hash 1.
+ * @param {string} hash2 - The transaction hash 2.
+ * @param {number} exchangeRate - The exchange rate.
+ * @param {number} exchangeBackRate - The exchange back rate.
+ *
+ * @return {Object} - The created transaction history object.
+ */
 const createTxnHistory = async (
   sender,
   receiver,
@@ -80,6 +106,17 @@ const createTxnHistory = async (
   }
 };
 
+/**
+ * Creates and perform the transaction..
+ *
+ * @param {Object} sender - The sender account object.
+ * @param {Object} receiver - The receiver account object.
+ * @param {number} amountToTransfer - The amount to be transferred.
+ * @param {Object} web3 - The web3 instance.
+ * @param {Object} lmb - The instance of the smart contract that holds the details of the token.
+ *
+ * @return {string} - The transaction hash.
+ */
 const makeTransaction = async (
   sender,
   receiver,
