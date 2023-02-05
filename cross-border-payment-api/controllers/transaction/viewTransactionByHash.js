@@ -3,6 +3,7 @@ const Transaction = require("../../models/TransactionHistory");
 module.exports = (req, res) => {
   console.log("Get transaction by Hash");
 
+  // find transaction by hash
   Transaction.findOne({
     $or: [
       { "meta.txnHash1": req.params.transactionHash },

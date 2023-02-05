@@ -10,10 +10,12 @@ const PEG_CURRENCY = process.env.PEG_CURRENCY;
 module.exports = async (req, res, lms, web3) => {
   let { accountFrom, accountTo, amountToTransfer } = req.body;
 
+  // variables
   const owner = await accUtils.getPDCOwner();
   const sender = await accUtils.retrieveDocumentByAccountNumber(accountFrom);
   const receiver = await accUtils.retrieveDocumentByAccountNumber(accountTo);
 
+  // check if balance is sufficient
   if (amountToTransfer > sender.balance) {
     const error = "Sender Account Balance not sufficient!";
     res.status(400).send({ message: error });
@@ -23,6 +25,7 @@ module.exports = async (req, res, lms, web3) => {
   const fromCurrency = sender.currency;
   const toCurrency = receiver.currency;
 
+  // converts the amount to be transferred
   let fxRes1 = await fxUtils.fxConvert(
     fromCurrency,
     PEG_CURRENCY,
@@ -34,11 +37,15 @@ module.exports = async (req, res, lms, web3) => {
 
   console.log(convertAmount);
   console.log(exchangeRate);
+
+  // converts the converted amount from peg currency to the PDC (native token)
   let convertAmountInPDC = await fxUtils.SGDtoPDC(convertAmount);
 
+  // starts a transaction session using mongoose
   const session = await mongoose.startSession();
   session.startTransaction();
 
+  // issue transactions
   try {
     // PANDA ACC to RECEIVER
     const hash1 = await txnUtils.makeTransaction(
@@ -61,6 +68,7 @@ module.exports = async (req, res, lms, web3) => {
     console.log(hash1);
     console.log(hash2);
 
+    // post transactions check
     if (hash1 && hash2) {
       let receivedAmountInSGD = await fxUtils.PDCtoSGD(convertAmountInPDC);
 
@@ -73,9 +81,12 @@ module.exports = async (req, res, lms, web3) => {
       let receivedAmount = fxRes2.convertedAmount;
       let exchangeBackRate = fxRes2.exchangeRate;
 
+      // updates the balance of the sender and receiver accounts
       try {
         await accUtils.deductBalance(accountFrom, amountToTransfer);
         await accUtils.increaseBalance(accountTo, receivedAmount);
+
+        // creates a transaction history
         let transactionHistory = await txnUtils.createTxnHistory(
           sender,
           receiver,
@@ -88,20 +99,24 @@ module.exports = async (req, res, lms, web3) => {
 
         await session.commitTransaction();
         session.endSession();
+
+        // response the transaction history object
         res.json(transactionHistory);
-        
       } catch (err) {
+        // aborts the transaction session
         await session.abortTransaction();
         session.endSession();
         console.log(err);
         return res.status(500).json("Bank account update and transaction fail");
       }
     } else {
+      // aborts the transaction session
       await session.abortTransaction();
       session.endSession();
       return res.status(500).json("Wallet transaction fail");
     }
   } catch (err) {
+    // aborts the transaction session
     await session.abortTransaction();
     session.endSession();
     console.log(err);

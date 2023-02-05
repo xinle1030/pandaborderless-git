@@ -5,6 +5,7 @@ const viewAllTransaction = require("../controllers/transaction/viewAllTransactio
 const BASE_URL = "/api/transaction";
 
 module.exports = function (app) {
+  // Add middleware to set "Access-Control-Allow-Headers" header in the response
   app.use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
@@ -13,8 +14,10 @@ module.exports = function (app) {
     next();
   });
 
+  // View all transactions
   app.get(BASE_URL + "/all", viewAllTransaction);
 
+  // View transaction by hash
   app.get(BASE_URL + "/:transactionHash", viewTransactionByHash);
 
 };

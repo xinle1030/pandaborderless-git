@@ -5,6 +5,7 @@ module.exports = (req, res) => {
   let loggedInUserId = req.userId;
   let accounts = [];
 
+  // find the customer by id
   Customer.findById(loggedInUserId, async (err, customer) => {
     if (err) {
       res.status(500).send({ message: err });

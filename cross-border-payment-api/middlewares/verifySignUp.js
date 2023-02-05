@@ -1,6 +1,11 @@
 const Customer = require("../models/Customer");
 const Account = require("../models/Account");
 
+// This function checks if the customer's email address has already been used for an account.
+// If it has, it checks if an account has already been created for that customer.
+// If both conditions are true, it sends an error response indicating that the email address is already in use.
+// If no customer account exists with the email address, it sends an error response indicating that there is no customer account.
+// If no error occurs, it calls the next middleware function.
 checkDuplicateAccEmail = async (req, res, next) => {
   await Customer.findOne({
     email: req.body.email,
@@ -33,6 +38,9 @@ checkDuplicateAccEmail = async (req, res, next) => {
   });
 };
 
+// This function checks if the customer's email address has already been used for an account.
+// If it has, it sends an error response indicating that the email address is already in use.
+// If no error occurs, it calls the next middleware function.
 checkDuplicateEmail = async (req, res, next) => {
   await Customer.findOne({
     email: req.body.email,
@@ -51,6 +59,9 @@ checkDuplicateEmail = async (req, res, next) => {
   });
 };
 
+// This function checks if the customer's username has already been used for an account.
+// If it has, it sends an error response indicating that the username is already in use.
+// If no error occurs, it calls the next middleware function.
 checkDuplicateUsername = async (req, res, next) => {
   // Username
   await Customer.findOne({

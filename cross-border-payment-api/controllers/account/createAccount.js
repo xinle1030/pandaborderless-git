@@ -2,12 +2,13 @@ const Account = require("../../models/Account");
 const Customer = require("../../models/Customer");
 const ethereumjs = require("ethereumjs-wallet");
 
+// Generate a new Metamask wallet.
 const generateWallet = () => {
   // generate a new random wallet
   const wallet = ethereumjs["default"].generate();
 
   // get the private key in hex format
-  const privateKey = (wallet.getPrivateKeyString()).substring(2);
+  const privateKey = wallet.getPrivateKeyString().substring(2);
 
   // get the address
   const address = wallet.getAddressString();
@@ -18,6 +19,7 @@ const generateWallet = () => {
   };
 };
 
+// Generate a random account Number with length 4.
 const generateAccountNumber = () => {
   let num = "";
   while (num.length < 4) {
@@ -27,8 +29,9 @@ const generateAccountNumber = () => {
 };
 
 module.exports = (req, res) => {
-  let {email, currency} = req.body;
+  let { email, currency } = req.body;
 
+  // Find the customer in the db based on the email
   Customer.findOne({
     email: email,
   }).exec((err, user) => {
@@ -37,8 +40,10 @@ module.exports = (req, res) => {
       return;
     }
 
+    // Generate a new wallet address and private key
     const { address, privateKey } = generateWallet();
 
+    // Create a new account object
     const account = new Account({
       accountNumber: generateAccountNumber(),
       walletAdrHash: address,
@@ -48,6 +53,7 @@ module.exports = (req, res) => {
       currency: currency,
     });
 
+    // Save account to db
     account.save((err, account) => {
       if (err) {
         res.status(500).send({ message: err });
