@@ -5,11 +5,12 @@ const { ObjectId } = require("mongodb");
 module.exports = async (req, res) => {
   console.log("Get transaction by Account");
 
+  // converts user id to ObjectID
   let loggedInUserId = new ObjectId(req.userId);
   let accountNum = req.params.accountNumber;
-
   let targetAcc;
 
+  // find the account by its account number
   await Account.findOne({
     accountNumber: accountNum,
   }).exec(async (err, acc) => {
@@ -18,6 +19,7 @@ module.exports = async (req, res) => {
       return;
     }
 
+    // check if the target account exists and if the user has access to it
     if (acc && !acc.ownerId.equals(loggedInUserId)) {
       res
         .status(400)
@@ -25,6 +27,7 @@ module.exports = async (req, res) => {
     } else {
       targetAcc = acc;
 
+      // find all transactions of the account
       await Transaction.find({
         $or: [{ accountFrom: targetAcc._id }, { accountTo: targetAcc._id }],
       })

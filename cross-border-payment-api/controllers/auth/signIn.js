@@ -17,6 +17,7 @@ module.exports = (req, res) => {
       return res.status(404).send({ message: "Customer Not found." });
     }
 
+    // Verify password
     var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
 
     if (!passwordIsValid) {
@@ -26,10 +27,12 @@ module.exports = (req, res) => {
       });
     }
 
+    // If everything is valid, create a JWT
     var token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     });
 
+    // Return a 200 status with user information and the access token
     res.status(200).send({
       id: user._id,
       username: user.username,
