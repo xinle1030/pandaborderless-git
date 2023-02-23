@@ -9,6 +9,7 @@ This is a monorepo containing 1 project as follows:
 ## Backend
 
 ### Setting up the server locally
+- Run ```npm i install nodemon -g```
 - Clone the project
 - Install NodeJS **LTS** version from <a href="https://nodejs.org/en/download/">NodeJs Official Page</a>
 - Download the product on this page
