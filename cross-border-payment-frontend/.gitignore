@@ -1,9 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/cross-border-payment-api/node_modules
-/cross-border-payment-api/config/
-
+/node_modules
 /.pnp
 .pnp.js
 
@@ -23,5 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-# Local Netlify folder
-.netlify

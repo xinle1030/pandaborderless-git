@@ -1,9 +1,10 @@
-import express from "express";
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config/.env" });
 
-const router = express.Router();
+const BASE_URL = "/api/payments/crossborder";
 
-router.get("/", (req, res) => {
-  res.send("Welcome to cross border payments");
-});
-
-export default router;
+module.exports = function (app) {
+  app.get("/", (req, res) => {
+    res.send("Welcome to cross border payment platform");
+  });
+};
