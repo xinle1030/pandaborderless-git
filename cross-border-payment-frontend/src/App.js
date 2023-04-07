@@ -22,6 +22,7 @@ import NotFound from './pages/NotFound';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import UserPage from './pages/UserPage';
+import WelcomeModal from './components/WelcomeModal';
 
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
@@ -65,6 +66,7 @@ function App() {
       <ChakraProvider theme={theme}>
         <Router>
           <NavBar />
+          <WelcomeModal />
           <Routes>
             <Route path="*" element={<NotFound />} />
             <Route path="/" element={<LandingPage />} />
